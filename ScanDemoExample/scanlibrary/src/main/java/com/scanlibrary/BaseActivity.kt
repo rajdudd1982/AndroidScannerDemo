@@ -6,7 +6,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 
-open abstract class BaseActivity : FragmentActivity() {
+open abstract class BaseActivity : AppCompatActivity() {
 
     fun requestPermission(permission: String, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {

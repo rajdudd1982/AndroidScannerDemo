@@ -5,8 +5,9 @@ import android.content.ComponentCallbacks2
 import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
+import androidx.fragment.app.FragmentActivity
 
-open abstract class BaseMediaScannerActivity : BaseActivity(), IScanner, ComponentCallbacks2 {
+open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, ComponentCallbacks2 {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)

@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
+import com.scanlibrary.BaseActivity
 import com.scanlibrary.BaseMediaScannerActivity
 import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
@@ -17,7 +18,7 @@ import com.scanlibrary.helpers.MediaHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
-class HomeActivity : BaseMediaScannerActivity() {
+class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
