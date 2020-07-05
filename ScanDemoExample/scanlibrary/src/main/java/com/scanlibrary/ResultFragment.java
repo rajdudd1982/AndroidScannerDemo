@@ -7,13 +7,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 
@@ -26,10 +31,6 @@ public class ResultFragment extends Fragment {
     private ImageView scannedImageView;
     private Button doneButton;
     private Bitmap original;
-    private Button originalButton;
-    private Button MagicColorButton;
-    private Button grayModeButton;
-    private Button bwButton;
     private Bitmap transformed;
     private static ProgressDialogFragment progressDialogFragment;
 
@@ -45,19 +46,33 @@ public class ResultFragment extends Fragment {
 
     private void init() {
         scannedImageView = (ImageView) view.findViewById(R.id.scannedImage);
-        originalButton = (Button) view.findViewById(R.id.original);
-        originalButton.setOnClickListener(new OriginalButtonClickListener());
-        MagicColorButton = (Button) view.findViewById(R.id.magicColor);
-        MagicColorButton.setOnClickListener(new MagicColorButtonClickListener());
-        grayModeButton = (Button) view.findViewById(R.id.grayMode);
-        grayModeButton.setOnClickListener(new GrayButtonClickListener());
-        bwButton = (Button) view.findViewById(R.id.BWMode);
-        bwButton.setOnClickListener(new BWButtonClickListener());
         Bitmap bitmap = getBitmap();
         setScannedImage(bitmap);
         doneButton = (Button) view.findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new DoneButtonClickListener());
     }
+
+    @Override
+    public void onViewCreated(final @NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((BottomNavigationView)view.findViewById(R.id.imageGradingNavigationView)).setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.original){
+                        new OriginalButtonClickListener().onClick(view);
+                } else if (item.getItemId() == R.id.magicColor){
+                    new MagicColorButtonClickListener().onClick(view);
+                } else if (item.getItemId() == R.id.black_white){
+                    new BWButtonClickListener().onClick(view);
+                } else if (item.getItemId() == R.id.gray_mode){
+                    new GrayButtonClickListener().onClick(view);
+                }
+                return false;
+            }
+        });
+    }
+
+
 
     private Bitmap getBitmap() {
         Uri uri = getUri();
