@@ -1,8 +1,6 @@
 package com.scanlibrary;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.io.IOException;
 
@@ -121,7 +121,7 @@ public class ResultFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        transformed = ((ScanActivity) getActivity()).getBWBitmap(original);
+                        transformed = ((BaseMediaScannerActivity) getActivity()).getBWBitmap(original);
                     } catch (final OutOfMemoryError e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -154,7 +154,7 @@ public class ResultFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        transformed = ((ScanActivity) getActivity()).getMagicColorBitmap(original);
+                        transformed = ((BaseMediaScannerActivity) getActivity()).getMagicColorBitmap(original);
                     } catch (final OutOfMemoryError e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -202,7 +202,7 @@ public class ResultFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        transformed = ((ScanActivity) getActivity()).getGrayBitmap(original);
+                        transformed = ((BaseMediaScannerActivity) getActivity()).getGrayBitmap(original);
                     } catch (final OutOfMemoryError e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -241,4 +241,6 @@ public class ResultFragment extends Fragment {
     protected synchronized void dismissDialog() {
         progressDialogFragment.dismissAllowingStateLoss();
     }
+
+
 }
