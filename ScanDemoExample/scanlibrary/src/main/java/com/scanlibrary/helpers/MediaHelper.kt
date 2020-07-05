@@ -1,4 +1,4 @@
-package com.scanner.demo.helpers
+package com.scanlibrary.helpers
 
 import android.app.Activity
 import android.content.Intent

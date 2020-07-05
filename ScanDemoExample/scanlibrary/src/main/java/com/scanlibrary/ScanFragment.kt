@@ -98,7 +98,7 @@ class ScanFragment : Fragment() {
     }
 
     private fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
-        val points = (activity as BaseMediaScannerActivity?)!!.getPoints1(tempBitmap)
+        val points = (activity as ScanActivity?)!!.getPoints(tempBitmap)
         val x1 = points[0]
         val x2 = points[1]
         val x3 = points[2]
@@ -173,7 +173,7 @@ class ScanFragment : Fragment() {
         val y3 = points[2]!!.y * yRatio
         val y4 = points[3]!!.y * yRatio
         Log.d("", "POints($x1,$y1)($x2,$y2)($x3,$y3)($x4,$y4)")
-        return (activity as BaseMediaScannerActivity?)!!.getScannedBitmap(original, x1, y1, x2, y2, x3, y3, x4, y4)
+        return (activity as ScanActivity?)!!.getScannedBitmap(original, x1, y1, x2, y2, x3, y3, x4, y4)
     }
 
     private inner class ScanAsyncTask(private val points: Map<Int, PointF>) : AsyncTask<Void, Void, Bitmap>() {

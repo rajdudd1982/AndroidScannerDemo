@@ -121,7 +121,7 @@ public class ResultFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        transformed = ((BaseMediaScannerActivity) getActivity()).getBWBitmap(original);
+                        transformed = ((ScanActivity) getActivity()).getBWBitmap(original);
                     } catch (final OutOfMemoryError e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -154,7 +154,7 @@ public class ResultFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        transformed = ((BaseMediaScannerActivity) getActivity()).getMagicColorBitmap(original);
+                        transformed = ((ScanActivity) getActivity()).getMagicColorBitmap(original);
                     } catch (final OutOfMemoryError e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -202,7 +202,7 @@ public class ResultFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        transformed = ((BaseMediaScannerActivity) getActivity()).getGrayBitmap(original);
+                        transformed = ((ScanActivity) getActivity()).getGrayBitmap(original);
                     } catch (final OutOfMemoryError e) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override

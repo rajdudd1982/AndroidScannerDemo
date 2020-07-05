@@ -6,7 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 
-open abstract class BaseMediaScannerActivity : BaseMediaScannerActivity1(), IScanner, ComponentCallbacks2 {
+open abstract class BaseMediaScannerActivity : BaseActivity(), IScanner, ComponentCallbacks2 {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)

@@ -11,15 +11,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import com.scanlibrary.BaseMediaScannerActivity
+import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
-import com.scanner.demo.helpers.MediaHelper
+import com.scanlibrary.helpers.MediaHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
 class HomeActivity : BaseMediaScannerActivity() {
-
-    private val scannedImageView: ImageView? = null
-    private lateinit var fileUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +53,9 @@ class HomeActivity : BaseMediaScannerActivity() {
     }
 
     private fun startScan(preference: Int) {
-        when(preference){
-            ScanConstants.OPEN_MEDIA -> MediaHelper.openMediaContent(this)
-            ScanConstants.OPEN_CAMERA -> fileUri = Uri.fromFile(MediaHelper.openCamera(this))
-        }
+        val intent = Intent(this, ScanActivity::class.java)
+        intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference)
+        startActivityForResult(intent, REQUEST_CODE)
 
     }
 
@@ -70,25 +67,11 @@ class HomeActivity : BaseMediaScannerActivity() {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 contentResolver.delete(uri!!, null, null)
-                scannedImageView!!.setImageBitmap(bitmap)
+                scannedImageView.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        } else if (resultCode == Activity.RESULT_OK) {
-            var bitmap: Bitmap? = null
-            try {
-                when (requestCode) {
-                    ScanConstants.START_CAMERA_REQUEST_CODE -> bitmap = MediaHelper.getBitmap(this, fileUri)
-                    ScanConstants.PICKFILE_REQUEST_CODE -> bitmap = MediaHelper.getBitmap(this, data!!.data)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            bitmap?.let { MediaHelper.postImagePick(this, it) }
-        } else {
-           finish()
         }
-
     }
 
     private fun convertByteArrayToBitmap(data: ByteArray): Bitmap {
