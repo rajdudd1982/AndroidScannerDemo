@@ -8,7 +8,34 @@ import androidx.fragment.app.FragmentActivity
 
 open abstract class BaseActivity : AppCompatActivity() {
 
-    fun requestPermission(permission: String, requestCode: Int) {
+     enum class PermissionCode {
+         WRITE_PERMISSION {
+             override fun getPermission(): String {
+                 return android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+             }
+
+             override fun getRequestCode(): Int {
+                 return 1001
+             }
+         },
+
+         CAMERA_PERMISSION {
+             override fun getPermission(): String {
+                 return android.Manifest.permission.CAMERA
+             }
+
+             override fun getRequestCode(): Int {
+                 return 1002
+             }
+         };
+
+         abstract fun getPermission() : String
+         abstract fun getRequestCode() : Int
+     }
+
+    fun requestPermission(permissionCode: PermissionCode) {
+        var permission = permissionCode.getPermission()
+        var requestCode = permissionCode.getRequestCode()
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
         } else {

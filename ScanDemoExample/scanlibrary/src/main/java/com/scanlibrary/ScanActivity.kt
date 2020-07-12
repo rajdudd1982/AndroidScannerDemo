@@ -14,7 +14,7 @@ class ScanActivity : BaseMediaScannerActivity() {
     companion object {
         init {
             try {
-                System.loadLibrary("opencv_java3")
+               // System.loadLibrary("opencv_java3")
                 System.loadLibrary("Scanner")
             } catch (e: java.lang.Exception){
                 Logger.getLogger(e.message)

@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.FileProvider
 import com.scanlibrary.IScanner
+import com.scanlibrary.R
 import com.scanlibrary.ScanConstants
 import com.scanlibrary.Utils
 import java.io.File
@@ -24,11 +25,9 @@ object MediaHelper {
     fun openCamera(activity: Activity) : File {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val file: File = createImageFile()
-        val isDirectoryCreated = file.parentFile.mkdirs()
-        Log.d("", "openCamera: isDirectoryCreated: $isDirectoryCreated")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val tempFileUri = FileProvider.getUriForFile(activity,
-                    "com.scanlibrary.provider",  // As defined in Manifest
+                    activity.getString(R.string.authority),
                     file)
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri)
         } else {
@@ -40,19 +39,12 @@ object MediaHelper {
     }
 
     private fun createImageFile(): File {
-        clearTempFolder()
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        return File(ScanConstants.IMAGE_PATH, "IMG_" + timeStamp + ".jpg")
-    }
-
-
-    private fun clearTempFolder() {
-        try {
-            val tempFolder = File(ScanConstants.IMAGE_PATH)
-            for (f in tempFolder.listFiles()) f.delete()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        var file =  File(ScanConstants.IMAGE_PATH)
+        if (!file.exists()) {
+            file.mkdir()
         }
+        return File(ScanConstants.IMAGE_PATH, "img_${timeStamp}.jpg")
     }
 
     @JvmStatic

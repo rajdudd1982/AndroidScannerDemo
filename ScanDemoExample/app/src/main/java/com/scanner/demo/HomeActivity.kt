@@ -9,14 +9,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import com.scanlibrary.BaseActivity
-import com.scanlibrary.BaseMediaScannerActivity
 import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
-import com.scanlibrary.helpers.MediaHelper
+import com.scanner.demo.helpers.PdfConverter
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 import java.io.IOException
+import java.util.*
 
 class HomeActivity : BaseActivity() {
 
@@ -27,14 +27,14 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun init() {
-        requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, 13)
+        requestPermission(PermissionCode.WRITE_PERMISSION)
         homeNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.gallery -> {
                     startScan(ScanConstants.OPEN_MEDIA)
                 }
                 R.id.camera -> {
-                    requestPermission(android.Manifest.permission.CAMERA, 12)
+                    requestPermission(PermissionCode.CAMERA_PERMISSION)
                 }
                 R.id.scan -> {
                     startScan(0)
@@ -68,11 +68,16 @@ class HomeActivity : BaseActivity() {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 contentResolver.delete(uri!!, null, null)
+                convertToPdf(Collections.singletonList(File(uri.path)), "");
                 scannedImageView.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun convertToPdf(fileList: List<File>, dest: String) {
+        PdfConverter.createPdf(fileList, dest)
     }
 
     private fun convertByteArrayToBitmap(data: ByteArray): Bitmap {
