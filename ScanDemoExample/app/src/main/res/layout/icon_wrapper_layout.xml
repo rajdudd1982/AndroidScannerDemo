@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scanner.demo.ui.base.PdfIconsLayout
+    android:id="@+id/pdfIconsLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="horizontal">
+
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        style="@style/IconStyle"
+        android:id="@+id/createPdf"
+        android:layout_gravity="bottom"
+        app:iiv_icon="gmd_document_file_pdf" />
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        style="@style/IconStyle"
+        android:id="@+id/shareDoc"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:iiv_icon="gmd_share" />
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        style="@style/IconStyle"
+        android:id="@+id/deleteDoc"
+        android:layout_gravity="bottom"
+        app:iiv_icon="gmd_file_download" />
+
+</com.scanner.demo.ui.base.PdfIconsLayout>

@@ -1,4 +1,4 @@
-package com.scanner.demo
+package com.scanner.demo.home
 
 import android.app.Activity
 import android.content.Intent
@@ -12,11 +12,11 @@ import android.view.MenuItem
 import com.scanlibrary.BaseActivity
 import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
+import com.scanner.demo.R
 import com.scanner.demo.helpers.PdfConverter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
-import java.util.*
 
 class HomeActivity : BaseActivity() {
 
@@ -68,8 +68,9 @@ class HomeActivity : BaseActivity() {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 contentResolver.delete(uri!!, null, null)
-                convertToPdf(Collections.singletonList(File(uri.path)), "");
-                scannedImageView.setImageBitmap(bitmap)
+                PdfConverter.createPdfFromBitmap(bitmap,   "${cacheDir}/file.pdf")
+                //convertToPdf(Collections.singletonList(File(uri.path)), "");
+                //scannedImageView.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printStackTrace()
             }

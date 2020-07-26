@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.scanner.demo.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/home_fragment">
+
+        <action android:id="@+id/docItemClicked"
+                app:destination="@id/homeItemActivity"/>
+
+    </fragment>
+
+
+    <activity
+        android:id="@+id/homeItemActivity"
+        android:name="com.scanner.demo.home_items.FolderItemsActivity"
+        android:label="FolderItemsActivity"
+        tools:layout="@layout/folder_items_main_layout">
+
+        <argument
+            android:name="savedDocViewModel"
+            app:argType="com.scanner.demo.home.SavedDocViewModel" />
+
+    </activity>
+
+</navigation>

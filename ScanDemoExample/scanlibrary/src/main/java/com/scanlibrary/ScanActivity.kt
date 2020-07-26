@@ -20,9 +20,7 @@ class ScanActivity : BaseMediaScannerActivity() {
                 Logger.getLogger(e.message)
             }
         }
-
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

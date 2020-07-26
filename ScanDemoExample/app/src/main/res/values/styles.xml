@@ -1,8 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="IconStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="iiv_color">@android:color/holo_red_dark</item>
+        <item name="iiv_size">36dp</item>
+        <item name="iiv_padding">8dp</item>
+        <item name="iiv_background_color">@color/green</item>
+        <item name="iiv_corner_radius">24dp</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:gravity">bottom</item>
+        <item name="iiv_shadow_radius">0dp</item>
+        <item name="iiv_shadow_dy">0dp</item>
+        <item name="iiv_shadow_dx">0dp</item>
+        <item name="android:scaleType">centerInside</item>
+
+
+        //app:iiv_padding="2dp"
+        //app:iiv_contour_color="#FF0000"
+        //app:iiv_contour_width="2dp"
+        //app:iiv_background_color="#FFFF00"
+        //app:iiv_corner_radius="2dp"
+
     </style>
 
 </resources>

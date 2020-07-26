@@ -9,4 +9,6 @@
     <string name="gallery">Gallery</string>
     <string name="scab">Scan</string>
 
+
+    <string name="folder_error_message">Folder already exists</string>
 </resources>
