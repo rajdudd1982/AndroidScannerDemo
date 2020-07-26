@@ -6,14 +6,13 @@ import android.util.AttributeSet
 import android.widget.RelativeLayout
 import com.scanlibrary.helpers.FileHelper
 import com.scanner.demo.helpers.FileInterimHelper
-import com.scanner.demo.home.FolderListAdapter
 import com.scanner.demo.home.SavedDocViewModel
 import com.scanner.demo.ui.base.PdfIconsLayout
 import kotlinx.android.synthetic.main.home_fragment.view.*
 
 class FolderItemContentLayout : RelativeLayout {
 
-    lateinit var adapter: SavedDocAdapter
+    lateinit var adapter: FolderItemsAdapter
     var docViewModelList: MutableList<SavedDocViewModel> = ArrayList()
 
     @JvmOverloads
@@ -24,7 +23,7 @@ class FolderItemContentLayout : RelativeLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
         recyclerView.setTouchListener()
-        adapter = SavedDocAdapter(context)
+        adapter = FolderItemsAdapter(context)
         recyclerView.adapter = adapter
     }
 
@@ -32,6 +31,13 @@ class FolderItemContentLayout : RelativeLayout {
         FileInterimHelper.listItems(filePath, pdfIconListener)?.apply {
             adapter.addAllItems(this)
         }
+        adapter.addItem(getAddMoreItem(), adapter.itemCount)
+    }
+
+    private fun getAddMoreItem():  SavedDocViewModel {
+        var addMoreItem = SavedDocViewModel()
+        addMoreItem.addMoreItem = true
+        return addMoreItem
     }
 
     private val pdfIconListener: PdfIconsLayout.PdfIconListener = object : PdfIconsLayout.PdfIconListener {

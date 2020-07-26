@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 open abstract  class BaseRecyclerAdapter<T>() : RecyclerView.Adapter<BaseRecyclerAdapter.BaseViewHolder<T>>() {
 
-    private  var itemList : ArrayList<T> = ArrayList()
+    protected var itemList : ArrayList<T> = ArrayList()
     protected lateinit var context: Context
     protected lateinit var layoutInflater: LayoutInflater
 

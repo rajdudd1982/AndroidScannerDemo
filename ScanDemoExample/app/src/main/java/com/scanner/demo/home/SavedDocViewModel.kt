@@ -11,6 +11,7 @@ class SavedDocViewModel : ViewModel(), Serializable {
     var position: Int = -1
     lateinit var file: File
     var selected: Boolean = false
+    var addMoreItem: Boolean = false
     @Transient
     var lastClickedItemType: MutableLiveData<ClickedItemType> = MutableLiveData()
 

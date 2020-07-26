@@ -8,16 +8,20 @@ import android.view.ViewGroup
 import com.scanner.demo.R
 import com.scanner.demo.home.SavedDocViewModel
 import com.scanner.demo.ui.base.BaseRecyclerAdapter
+import kotlinx.android.synthetic.main.add_more_layout.view.*
 import kotlinx.android.synthetic.main.home_list_item_layout.view.*
 import kotlinx.android.synthetic.main.icon_wrapper_layout.view.*
 
 
-class SavedDocAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewModel>(context) {
+class FolderItemsAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewModel>(context) {
 
     var viewType: ViewType = ViewType.Linear
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<SavedDocViewModel> {
-        return return SavedGridDocViewHolder(context, layoutInflater.inflate(R.layout.doc_grid_item_layout, parent, false))
+        if(viewType == ViewType.Grid.ordinal){
+            return SavedGridDocViewHolder(context, layoutInflater.inflate(R.layout.doc_grid_item_layout, parent, false))
+        }
+        return AddMoreDocViewHolder(context, layoutInflater.inflate(R.layout.add_more_layout, parent, false))
     }
 
     class SavedGridDocViewHolder(context: Context, view: View) : BaseViewHolder<SavedDocViewModel>(context, view) {
@@ -33,7 +37,24 @@ class SavedDocAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewModel>
         }
     }
 
+
+    class AddMoreDocViewHolder(context: Context, view: View) : BaseViewHolder<SavedDocViewModel>(context, view) {
+        override fun updateView(item: SavedDocViewModel, position: Int) {
+
+            itemView.camera.setOnClickListener {
+
+            }
+
+            itemView.gallery.setOnClickListener {
+
+            }
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
+        if (itemList[position].addMoreItem) {
+            return ViewType.AddMore.ordinal
+        }
         return viewType.ordinal
     }
 

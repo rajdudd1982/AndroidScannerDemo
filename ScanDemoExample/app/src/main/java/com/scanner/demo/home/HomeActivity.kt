@@ -102,6 +102,6 @@ class HomeActivity : BaseActivity() {
     }
 
     companion object {
-        private const val REQUEST_CODE = 99
+        const val REQUEST_CODE = 99
     }
 }
