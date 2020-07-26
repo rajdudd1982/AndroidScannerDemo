@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
+import com.scanlibrary.helpers.FileHelper
 import com.scanlibrary.helpers.MediaHelper
 import java.util.logging.Logger
 
@@ -28,7 +30,10 @@ class ScanActivity : BaseMediaScannerActivity() {
 
         when(intent.getIntExtra(ScanConstants.OPEN_INTENT_PREFERENCE, 0)){
             ScanConstants.OPEN_MEDIA -> MediaHelper.openMediaContent(this)
-            ScanConstants.OPEN_CAMERA -> fileUri = Uri.fromFile(MediaHelper.openCamera(this))
+            ScanConstants.OPEN_CAMERA -> {
+                var path =  if(TextUtils.isEmpty(intent.getStringExtra(ScanConstants.FOLDER_PATH)))  FileHelper.getDefaultFolderPath() else  intent.getStringExtra(ScanConstants.FOLDER_PATH)
+                fileUri = Uri.fromFile(MediaHelper.openCamera(this, path))
+              }
         }
     }
 

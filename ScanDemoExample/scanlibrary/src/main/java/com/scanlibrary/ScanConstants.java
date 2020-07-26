@@ -17,4 +17,7 @@ public class ScanConstants {
     public final static String IMAGE_PATH = Environment.getExternalStorageDirectory().getPath() + "/scanSample";
 
     public final static String SELECTED_BITMAP = "selectedBitmap";
+
+    public final static String FOLDER_PATH = "folder_path";
+
 }

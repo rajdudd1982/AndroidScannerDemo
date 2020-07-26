@@ -14,6 +14,7 @@ class FolderItemsActivity :  BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.folder_items_main_layout)
 
+        folderItemLayout.activity = this
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         setItemList()
     }

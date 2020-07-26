@@ -256,6 +256,4 @@ public class ResultFragment extends Fragment {
     protected synchronized void dismissDialog() {
         progressDialogFragment.dismissAllowingStateLoss();
     }
-
-
 }

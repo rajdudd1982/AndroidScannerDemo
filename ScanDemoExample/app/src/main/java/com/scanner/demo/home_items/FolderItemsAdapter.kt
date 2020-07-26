@@ -42,11 +42,13 @@ class FolderItemsAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMod
         override fun updateView(item: SavedDocViewModel, position: Int) {
 
             itemView.camera.setOnClickListener {
-
+                item.lastClickedItemType = SavedDocViewModel.ClickedItemType.Camera
+                item.itemClickListener.onItemClick(item)
             }
 
             itemView.gallery.setOnClickListener {
-
+                item.lastClickedItemType = SavedDocViewModel.ClickedItemType.Gallery
+                item.itemClickListener.onItemClick(item)
             }
         }
     }

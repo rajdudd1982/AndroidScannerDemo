@@ -22,12 +22,21 @@ class PdfIconsLayout : LinearLayout {
         super.onFinishInflate()
         deleteDoc.setOnClickListener {
           // item got deleted
-          savedDocViewModel.itemClickAction.onDeleteItemClicked(savedDocViewModel)
+            savedDocViewModel.lastClickedItemType = SavedDocViewModel.ClickedItemType.Delete
+            savedDocViewModel.itemClickListener.onItemClick(savedDocViewModel)
+        }
+
+        createPdf.setOnClickListener {
+            // item got deleted
+            savedDocViewModel.lastClickedItemType = SavedDocViewModel.ClickedItemType.CreatePdf
+            savedDocViewModel.itemClickListener.onItemClick(savedDocViewModel)
+        }
+
+        shareDoc.setOnClickListener {
+            // item got deleted
+            savedDocViewModel.lastClickedItemType = SavedDocViewModel.ClickedItemType.Share
+            savedDocViewModel.itemClickListener.onItemClick(savedDocViewModel)
         }
     }
 
-
-    interface PdfIconListener {
-        fun onDeleteItemClicked(savedDocViewModel: SavedDocViewModel)
-    }
 }

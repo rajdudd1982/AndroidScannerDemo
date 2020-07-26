@@ -20,9 +20,10 @@ import java.io.IOException
 object MediaHelper {
 
     @JvmStatic
-    fun openCamera(activity: Activity) : File? {
+    fun openCamera(activity: Activity, folderPath: String = FileHelper.getDefaultFolderPath()) : File? {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val file: File? = FileHelper.createImage()
+
+        val file: File? = FileHelper.createImage(folderPath)
         file?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val tempFileUri = FileProvider.getUriForFile(activity,

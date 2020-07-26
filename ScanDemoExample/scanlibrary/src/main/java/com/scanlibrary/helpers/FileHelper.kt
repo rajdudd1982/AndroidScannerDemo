@@ -15,8 +15,8 @@ object FileHelper {
     @JvmStatic
     fun createImage(folderPath: String = getDefaultFolderPath()) : File? {
         // creating default folder
-        createDefaultFolder()
-        var newFolderPath: String = getDefaultFolderPath()
+        createFolder(getDefaultFolderPath())
+        var newFolderPath: String = folderPath
         if (getDefaultFolderPath().equals(folderPath, true)) {
             newFolderPath = "${getDefaultFolderPath()}/ScannedDoc_${Calendar.getInstance().timeInMillis}"
 
@@ -37,18 +37,16 @@ object FileHelper {
         return file.path
     }
 
-    private fun createDefaultFolder() {
-        var file =  File(getDefaultFolderPath())
+
+    fun createFolder(folderPath: String) {
+        var file =  File(folderPath)
         if (!file.exists()) {
             file.mkdir()
         }
     }
 
     private fun createImageFile(folderPath: String): File {
-        var file =  File(folderPath)
-        if (!file.exists()) {
-            file.mkdir()
-        }
+        createFolder(folderPath)
         return File(folderPath, "doc_${Calendar.getInstance().timeInMillis}.jpg")
     }
 }

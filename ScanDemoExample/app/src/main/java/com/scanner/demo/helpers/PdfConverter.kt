@@ -20,7 +20,7 @@ object PdfConverter {
         var document = PdfDocument();
 
         // crate a page description
-        var pageInfo = PdfDocument.PageInfo.Builder(100, 100, 1).create();
+        var pageInfo = PdfDocument.PageInfo.Builder(3000, 8000, 1).create();
 
         // start a page
         var page = document.startPage(pageInfo);
@@ -30,9 +30,11 @@ object PdfConverter {
         matrix.setScale(500F, 500F)
 
         // draw something on the page
+        var top = 0F
         for(file in fileList) {
             val bitmap = BitmapFactory.decodeFile(file.path)
-            page.canvas.drawBitmap(bitmap, 0F,0F, Paint())
+            page.canvas.drawBitmap(bitmap, 0F, top, Paint())
+            top += 2000F
         }
 
         // finish the page
@@ -57,7 +59,7 @@ object PdfConverter {
         var document = PdfDocument();
 
         // crate a page description
-        var pageInfo = PdfDocument.PageInfo.Builder(100, 100, 1).create();
+        var pageInfo = PdfDocument.PageInfo.Builder(1000, 1000, 1).create();
 
         // start a page
         var page = document.startPage(pageInfo);
