@@ -1,4 +1,4 @@
-package com.scanner.demo.scanlibrary
+package com.scanlibrary
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,8 @@ import android.net.Uri
 import android.os.Bundle
 import com.scanlibrary.helpers.MediaHelper
 import com.scanner.demo.R
+import com.scanner.demo.scanlibrary.BaseMediaScannerActivity
+import com.scanner.demo.scanlibrary.ScanConstants
 import java.util.logging.Logger
 
 class ScanActivity : BaseMediaScannerActivity() {

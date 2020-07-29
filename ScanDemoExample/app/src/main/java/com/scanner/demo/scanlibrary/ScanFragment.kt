@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.scanlibrary.ScanActivity
 import com.scanlibrary.helpers.Utils.getUri
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
@@ -68,7 +69,7 @@ class ScanFragment : BaseScanFragment() {
     }
 
     private fun getEdgePoints(tempBitmap: Bitmap): Map<Int, PointF> {
-        val pointFs = bitmapTransformation.getContourEdgePoints(activity!! as ScanActivity,  tempBitmap)
+        val pointFs = bitmapTransformation.getContourEdgePoints(tempBitmap)
         return orderedValidEdgePoints(tempBitmap, pointFs)
     }
 
