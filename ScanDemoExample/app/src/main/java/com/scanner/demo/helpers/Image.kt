@@ -58,7 +58,7 @@ data class Image(val uri: Uri,
 
             }
 
-            val selection = "${MediaStore.Images.Media.BUCKET_DISPLAY_NAME}  like ?"
+            val selection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { "${MediaStore.Images.Media.RELATIVE_PATH}  like ?"} else "${MediaStore.Images.Media.DATA}  like ?"
 
             val selectionArgs = arrayOf("%${folderPath}%")
 

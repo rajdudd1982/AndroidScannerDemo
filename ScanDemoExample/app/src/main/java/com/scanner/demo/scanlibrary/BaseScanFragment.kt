@@ -24,6 +24,9 @@ open class BaseScanFragment @JvmOverloads constructor(contentLayoutId: Int=0): F
     protected val uri: Uri?
         protected get() = arguments!!.getParcelable(ScanConstants.SELECTED_BITMAP)
 
+    protected val folderPath: String?
+        protected get() = arguments!!.getString(ScanConstants.FOLDER_PATH)
+
 
     @Synchronized
     protected fun showProgressDialog(message: String?) {

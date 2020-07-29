@@ -18,7 +18,7 @@ import java.io.IOException
  */
 object Utils {
     @JvmStatic
-    fun getUri(context: Context, bitmap: Bitmap, folderPath: String): Uri? {
+    fun getUri(context: Context, bitmap: Bitmap, folderPath: String?): Uri? {
         //val bytes = ByteArrayOutputStream()
         //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
        //val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
@@ -39,7 +39,7 @@ object Utils {
     }
 
     @SuppressLint("InlinedApi", "ObsoleteSdkInt")
-    private fun initImageSaving(context: Context, bitmap: Bitmap, folderName: String)  : Uri? {
+    private fun initImageSaving(context: Context, bitmap: Bitmap, folderName: String?)  : Uri? {
         FileHelper.createFolder(ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH)
         var folderNameNew = folderName
         if (TextUtils.isEmpty(folderName)) {

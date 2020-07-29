@@ -80,9 +80,7 @@ class ResultFragment : BaseScanFragment() {
                     val data = Intent()
                     var bitmap = transformed ?: original
 
-                    var path: String? = uri?.path
-                    val finalPath: String = path ?: "dummy"
-                    val uri = Utils.getUri(activity!!, bitmap!!, finalPath)
+                    val uri = Utils.getUri(activity!!, bitmap!!, folderPath)
                     data.putExtra(ScanConstants.SCANNED_RESULT, uri)
                     activity!!.setResult(Activity.RESULT_OK, data)
                     original!!.recycle()
@@ -93,6 +91,7 @@ class ResultFragment : BaseScanFragment() {
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    dismissDialog()
                 }
             }
         }

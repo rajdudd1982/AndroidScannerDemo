@@ -22,6 +22,7 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
         val fragment = ScanFragment()
         val bundle = Bundle()
         bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
+        bundle.putString(ScanConstants.FOLDER_PATH, getFolderPath())
         fragment.arguments = bundle
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -66,5 +67,8 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
         }
     }
 
+    protected fun getFolderPath() : String {
+        return  intent.getStringExtra(ScanConstants.FOLDER_PATH) ?: ""
+    }
 
 }

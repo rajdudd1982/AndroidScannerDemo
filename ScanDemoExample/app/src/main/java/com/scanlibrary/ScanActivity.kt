@@ -57,9 +57,6 @@ class ScanActivity : BaseMediaScannerActivity() {
         }
     }
 
-    private fun getFolderPath() : String {
-        return  intent.getStringExtra(ScanConstants.FOLDER_PATH) ?: ""
-    }
 
     external fun getScannedBitmap(bitmap: Bitmap, x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Bitmap
 

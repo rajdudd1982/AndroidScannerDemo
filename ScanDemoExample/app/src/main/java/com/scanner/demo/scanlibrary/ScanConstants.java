@@ -24,7 +24,8 @@ public class ScanConstants {
 
 
     public final static String FINAL_IMAGE_PREFIX = "img_prefix";
-    public final static String FINAL_IMAGE_FOLDER_PREFIX_PATH = Environment.getExternalStorageDirectory().getPath() + "/ScannedDocuments";
+    public final static String FOLDER_PREFIX_PATH = "ScannedDocuments";
+    public final static String FINAL_IMAGE_FOLDER_PREFIX_PATH = Environment.getExternalStorageDirectory().getPath() + "/" + FOLDER_PREFIX_PATH;
     public final static String INTERMEDIATE_FOLDERS_PREFIX = "imp_doc";
 
 

@@ -34,7 +34,7 @@ open class  HomeContentLayout : RelativeLayout {
     }
 
     fun listItems(filePath: String = FileHelper.getDefaultFolderPath()) {
-        FileInterimHelper.getImagesInFolder(ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH, itemClickListener)?.apply {
+        FileInterimHelper.getImagesInFolder(ScanConstants.FOLDER_PREFIX_PATH, itemClickListener)?.apply {
             adapter.addAllItems(this)
         }
     }
