@@ -10,9 +10,9 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import com.scanlibrary.BaseActivity
-import com.scanlibrary.ScanActivity
 import com.scanner.demo.R
 import com.scanner.demo.helpers.PdfConverter
+import com.scanner.demo.scanlibrary.ScanActivity
 import com.scanner.demo.scanlibrary.ScanConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File

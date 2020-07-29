@@ -14,10 +14,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.scanlibrary.helpers.Utils.getUri
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.BaseScanFragment
-import com.scanner.demo.scanlibrary.IScanner
-import com.scanner.demo.scanlibrary.ProgressDialogFragment
-import com.scanner.demo.scanlibrary.SingleButtonDialogFragment
+import com.scanner.demo.scanlibrary.*
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import kotlinx.android.synthetic.main.scan_fragment_layout.*
 

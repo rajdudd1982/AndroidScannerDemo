@@ -2,9 +2,9 @@ package com.scanner.demo.helpers
 
 import android.app.Activity
 import android.content.Intent
-import com.scanlibrary.ScanActivity
 import com.scanner.demo.home.HomeActivity
 import com.scanner.demo.home.SavedDocViewModel
+import com.scanner.demo.scanlibrary.ScanActivity
 import com.scanner.demo.scanlibrary.ScanConstants
 
 object IntentHelper {
