@@ -19,34 +19,28 @@ import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ProgressDialogFragment
 import com.scanner.demo.scanlibrary.ScanConstants
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
+import kotlinx.android.synthetic.main.result_layout.*
 import java.io.IOException
 
 /**
  * Created by jhansi on 29/03/15.
  */
 class ResultFragment : Fragment() {
-    private var mainView: View? = null
-    private var scannedImageView: ImageView? = null
-    private var doneButton: Button? = null
+
     private var original: Bitmap? = null
     private var transformed: Bitmap? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mainView = inflater.inflate(R.layout.result_layout, null)
-        init()
-        return mainView
-    }
 
-    private fun init() {
-        scannedImageView = mainView!!.findViewById<View>(R.id.scannedImage) as ImageView
-        val bitmap = bitmap
-        setScannedImage(bitmap)
-        doneButton = mainView!!.findViewById<View>(R.id.doneButton) as Button
-        doneButton!!.setOnClickListener(DoneButtonClickListener(uri))
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.result_layout, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (view.findViewById<View>(R.id.imageGradingNavigationView) as BottomNavigationView).setOnNavigationItemSelectedListener { item ->
+
+        scannedImageView.setImageBitmap(bitmap)
+        doneButton!!.setOnClickListener(DoneButtonClickListener(uri))
+
+        imageGradingNavigationView.setOnNavigationItemSelectedListener { item ->
             if (item.itemId == R.id.original) {
                 BWButtonClickListener(BitmapTransformation.TransformationType.Original).onClick(view)
             } else if (item.itemId == R.id.magicColor) {
@@ -76,9 +70,6 @@ class ResultFragment : Fragment() {
     private val uri: Uri?
         private get() = arguments!!.getParcelable(ScanConstants.SCANNED_RESULT)
 
-    fun setScannedImage(scannedImage: Bitmap?) {
-        scannedImageView!!.setImageBitmap(scannedImage)
-    }
 
     private inner class DoneButtonClickListener(uri: Uri?) : View.OnClickListener {
         override fun onClick(v: View) {
@@ -111,7 +102,6 @@ class ResultFragment : Fragment() {
     private inner class BWButtonClickListener(val type: BitmapTransformation.TransformationType) : View.OnClickListener {
         override fun onClick(v: View) {
             showProgressDialog(resources.getString(R.string.applying_filter))
-
             AsyncTask.execute {
                 try {
                     transformed = BitmapTransformation(activity!! as ScanActivity).bitmapTransformationByType(original!!, type)
@@ -133,7 +123,7 @@ class ResultFragment : Fragment() {
 
 
     @Synchronized
-    protected fun showProgressDialog(message: String?) {
+    private fun showProgressDialog(message: String?) {
         if (progressDialogFragment != null && progressDialogFragment!!.isVisible) {
             // Before creating another loading dialog, close all opened loading dialogs (if any)
             progressDialogFragment!!.dismissAllowingStateLoss()
@@ -145,7 +135,7 @@ class ResultFragment : Fragment() {
     }
 
     @Synchronized
-    protected fun dismissDialog() {
+    private fun dismissDialog() {
         progressDialogFragment!!.dismissAllowingStateLoss()
     }
 
