@@ -114,7 +114,7 @@ class ResultFragment : Fragment() {
 
             AsyncTask.execute {
                 try {
-                    transformed = BitmapTransformation().bitmapTransformationByType(activity!! as ScanActivity, original!!, type)
+                    transformed = BitmapTransformation(activity!! as ScanActivity).bitmapTransformationByType(original!!, type)
                 } catch (e: OutOfMemoryError) {
                     activity!!.runOnUiThread {
                         transformed = original

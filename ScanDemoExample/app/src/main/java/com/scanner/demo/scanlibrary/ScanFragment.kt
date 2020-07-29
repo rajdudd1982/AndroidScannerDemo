@@ -2,14 +2,11 @@ package com.scanlibrary
 
 import android.app.Activity
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.graphics.PointF
-import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +21,6 @@ import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.*
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import java.io.IOException
-import java.util.ArrayList
 
 /**
  * Created by jhansi on 29/03/15.
@@ -38,12 +34,14 @@ class ScanFragment : Fragment() {
     private var progressDialogFragment: ProgressDialogFragment? = null
     private var scanner: IScanner? = null
     private var original: Bitmap? = null
+    private lateinit var bitmapTransformation: BitmapTransformation
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         if (activity !is IScanner) {
             throw ClassCastException("Activity must implement IScanner")
         }
         scanner = activity
+        bitmapTransformation = BitmapTransformation(activity!! as ScanActivity)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -83,7 +81,7 @@ class ScanFragment : Fragment() {
         private get() = arguments!!.getParcelable(ScanConstants.SELECTED_BITMAP)
 
     private fun setBitmap(original: Bitmap) {
-        val scaledBitmap = scaledBitmap(original, sourceFrame!!.width, sourceFrame!!.height)
+        val scaledBitmap = bitmapTransformation.scaledBitmap(original, sourceFrame!!.width, sourceFrame!!.height)
         sourceImageView!!.setImageBitmap(scaledBitmap)
         val tempBitmap = (sourceImageView!!.drawable as BitmapDrawable).bitmap
         val pointFs = getEdgePoints(tempBitmap)
@@ -96,33 +94,16 @@ class ScanFragment : Fragment() {
     }
 
     private fun getEdgePoints(tempBitmap: Bitmap): Map<Int, PointF> {
-        val pointFs = getContourEdgePoints(tempBitmap)
+        val pointFs = bitmapTransformation.getContourEdgePoints(tempBitmap)
         return orderedValidEdgePoints(tempBitmap, pointFs)
     }
 
 
-    fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
-        val points = (activity!! as ScanActivity).getPoints(tempBitmap)
-        val x1 = points[0]
-        val x2 = points[1]
-        val x3 = points[2]
-        val x4 = points[3]
-        val y1 = points[4]
-        val y2 = points[5]
-        val y3 = points[6]
-        val y4 = points[7]
-        val pointFs: MutableList<PointF> = ArrayList()
-        pointFs.add(PointF(x1, y1))
-        pointFs.add(PointF(x2, y2))
-        pointFs.add(PointF(x3, y3))
-        pointFs.add(PointF(x4, y4))
-        return pointFs
-    }
 
     private fun orderedValidEdgePoints(tempBitmap: Bitmap, pointFs: List<PointF>): Map<Int, PointF> {
         var orderedPoints = polygonView!!.getOrderedPoints(pointFs)
         if (!polygonView!!.isValidShape(orderedPoints)) {
-            orderedPoints = BitmapTransformation().getOutlinePoints(tempBitmap)
+            orderedPoints = bitmapTransformation.getOutlinePoints(tempBitmap)
         }
         return orderedPoints
     }
@@ -148,27 +129,8 @@ class ScanFragment : Fragment() {
         return points.size == 4
     }
 
-    private fun scaledBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        val m = Matrix()
-        m.setRectToRect(RectF(0F, 0F, bitmap.width.toFloat(), bitmap.height.toFloat()), RectF(0F, 0F, width.toFloat(), height.toFloat()), Matrix.ScaleToFit.CENTER)
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, m, true)
-    }
-
     private fun getScannedBitmap(original: Bitmap?, points: Map<Int, PointF>): Bitmap {
-        val width = original!!.width
-        val height = original.height
-        val xRatio = original.width.toFloat() / sourceImageView!!.width
-        val yRatio = original.height.toFloat() / sourceImageView!!.height
-        val x1 = points[0]!!.x * xRatio
-        val x2 = points[1]!!.x * xRatio
-        val x3 = points[2]!!.x * xRatio
-        val x4 = points[3]!!.x * xRatio
-        val y1 = points[0]!!.y * yRatio
-        val y2 = points[1]!!.y * yRatio
-        val y3 = points[2]!!.y * yRatio
-        val y4 = points[3]!!.y * yRatio
-        Log.d("", "POints($x1,$y1)($x2,$y2)($x3,$y3)($x4,$y4)")
-        return (activity!! as ScanActivity).getScannedBitmap(original, x1, y1, x2, y2, x3, y3, x4, y4)
+        return bitmapTransformation.getScannedBitmap(sourceImageView!!, original, points)
     }
 
     private inner class ScanAsyncTask(private val points: Map<Int, PointF>) : AsyncTask<Uri?, Void, Bitmap>() {

@@ -1,15 +1,18 @@
 package com.scanner.demo.scanlibrary.result
 
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.PointF
+import android.graphics.RectF
 import android.util.Log
 import android.widget.ImageView
 import com.scanlibrary.ScanActivity
+import java.util.ArrayList
 import java.util.HashMap
 
-class BitmapTransformation {
+class BitmapTransformation(val activity: ScanActivity) {
 
-    fun bitmapTransformationByType(activity: ScanActivity, original: Bitmap, type: TransformationType): Bitmap {
+    fun bitmapTransformationByType(original: Bitmap, type: TransformationType): Bitmap {
         var bitmap: Bitmap = original
         try {
             when (type) {
@@ -33,7 +36,31 @@ class BitmapTransformation {
         return outlinePoints
     }
 
-    fun getScannedBitmap(activity: ScanActivity, sourceImageView: ImageView, original: Bitmap?, points: Map<Int, PointF>): Bitmap {
+    fun scaledBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
+        val m = Matrix()
+        m.setRectToRect(RectF(0F, 0F, bitmap.width.toFloat(), bitmap.height.toFloat()), RectF(0F, 0F, width.toFloat(), height.toFloat()), Matrix.ScaleToFit.CENTER)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, m, true)
+    }
+
+    fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
+        val points = activity.getPoints(tempBitmap)
+        val x1 = points[0]
+        val x2 = points[1]
+        val x3 = points[2]
+        val x4 = points[3]
+        val y1 = points[4]
+        val y2 = points[5]
+        val y3 = points[6]
+        val y4 = points[7]
+        val pointFs: MutableList<PointF> = ArrayList()
+        pointFs.add(PointF(x1, y1))
+        pointFs.add(PointF(x2, y2))
+        pointFs.add(PointF(x3, y3))
+        pointFs.add(PointF(x4, y4))
+        return pointFs
+    }
+
+    fun getScannedBitmap(sourceImageView: ImageView, original: Bitmap?, points: Map<Int, PointF>): Bitmap {
         val width = original!!.width
         val height = original.height
         val xRatio = original.width.toFloat() / sourceImageView!!.width

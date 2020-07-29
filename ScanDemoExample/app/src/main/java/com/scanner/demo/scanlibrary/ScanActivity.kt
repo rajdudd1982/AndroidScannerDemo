@@ -5,12 +5,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
-import com.scanlibrary.helpers.FileHelper
 import com.scanlibrary.helpers.MediaHelper
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ScanConstants
-
 import java.util.logging.Logger
 
 class ScanActivity : BaseMediaScannerActivity() {
