@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import android.view.ViewGroup
 import com.scanner.demo.R
+import com.scanner.demo.helpers.Image
 import com.scanner.demo.home.SavedDocViewModel
 import com.scanner.demo.ui.base.BaseRecyclerAdapter
 import kotlinx.android.synthetic.main.add_more_layout.view.*
@@ -26,8 +27,11 @@ class FolderItemsAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMod
 
     class SavedGridDocViewHolder(context: Context, view: View) : BaseViewHolder<SavedDocViewModel>(context, view) {
         override fun updateView(item: SavedDocViewModel, position: Int) {
-            val bitmap = BitmapFactory.decodeFile(item.file.path)
-            itemView.imageView.background = BitmapDrawable(context.resources, bitmap)
+            item.image?.apply {
+                val bitmap = Image.getBitmapFromUri(context.contentResolver, this.uri)//BitmapFactory.decodeFile(item.getImagePath())
+                itemView.imageView.background = BitmapDrawable(context.resources, bitmap)
+            }
+
             setIconLayout(item, position)
         }
 

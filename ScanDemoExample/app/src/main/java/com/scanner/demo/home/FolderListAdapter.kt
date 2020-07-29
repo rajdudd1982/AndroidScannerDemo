@@ -2,11 +2,15 @@ package com.scanner.demo.home
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
+import android.util.Size
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.navigation.Navigation
 import com.scanner.demo.R
+import com.scanner.demo.helpers.Image
 import com.scanner.demo.ui.base.BaseRecyclerAdapter
 import kotlinx.android.synthetic.main.home_list_item_layout.view.*
 import kotlinx.android.synthetic.main.icon_wrapper_layout.view.*
@@ -32,9 +36,12 @@ class FolderListAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMode
 
         override fun updateView(item: SavedDocViewModel, position: Int) {
 
-            val bitmap = BitmapFactory.decodeFile(item.getImagePath())
-            itemView.imageView.setImageBitmap(bitmap)
-            itemView.fileName.text = item.file.nameWithoutExtension
+            item.image?.apply {
+                val bitmap = Image.getBitmapFromUri(context.contentResolver, this.uri)//BitmapFactory.decodeFile(item.getImagePath())
+                itemView.imageView.setImageBitmap(bitmap)
+            }
+
+            itemView.fileName.text = item.image?.name
 
             var cal = Calendar.getInstance()
             cal.timeInMillis = item.file.lastModified()

@@ -12,7 +12,6 @@ import androidx.core.content.FileProvider
 import com.scanlibrary.IScanner
 import com.scanlibrary.R
 import com.scanlibrary.ScanConstants
-import com.scanlibrary.Utils
 import java.io.File
 import java.io.IOException
 
@@ -23,7 +22,7 @@ object MediaHelper {
     fun openCamera(activity: Activity, folderPath: String = FileHelper.getDefaultFolderPath()) : File? {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        val file: File? = FileHelper.createImage(folderPath)
+        val file: File? = FileHelper.createTempImageFile(activity)
         file?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val tempFileUri = FileProvider.getUriForFile(activity,
@@ -57,8 +56,8 @@ object MediaHelper {
 
 
 
-    fun postImagePick(activity: Activity, bitmap: Bitmap) {
-        val uri = Utils.getUri(activity, bitmap)
+    fun postImagePick(activity: Activity, bitmap: Bitmap, folderPath: String) {
+        val uri = Utils.getUri(activity, bitmap, folderPath)
         bitmap.recycle()
         (activity as IScanner).onBitmapSelect(uri)
     }

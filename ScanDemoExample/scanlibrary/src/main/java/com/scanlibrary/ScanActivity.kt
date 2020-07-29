@@ -31,8 +31,7 @@ class ScanActivity : BaseMediaScannerActivity() {
         when(intent.getIntExtra(ScanConstants.OPEN_INTENT_PREFERENCE, 0)){
             ScanConstants.OPEN_MEDIA -> MediaHelper.openMediaContent(this)
             ScanConstants.OPEN_CAMERA -> {
-                var path =  if(TextUtils.isEmpty(intent.getStringExtra(ScanConstants.FOLDER_PATH)))  FileHelper.getDefaultFolderPath() else  intent.getStringExtra(ScanConstants.FOLDER_PATH)
-                fileUri = Uri.fromFile(MediaHelper.openCamera(this, path))
+                fileUri = Uri.fromFile(MediaHelper.openCamera(this, getFolderPath()))
               }
         }
     }
@@ -49,12 +48,15 @@ class ScanActivity : BaseMediaScannerActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            bitmap?.let { MediaHelper.postImagePick(this, it) }
+            bitmap?.let { MediaHelper.postImagePick(this, it, getFolderPath()) }
         } else {
             finish()
         }
     }
 
+    private fun getFolderPath() : String {
+        return  intent.getStringExtra(ScanConstants.FOLDER_PATH) ?: ""
+    }
 
     external fun getScannedBitmap(bitmap: Bitmap, x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Bitmap
 

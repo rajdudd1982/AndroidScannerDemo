@@ -1,5 +1,6 @@
 package com.scanlibrary.helpers
 
+import android.app.Activity
 import com.scanlibrary.ScanConstants
 import java.io.File
 import java.util.*
@@ -7,6 +8,7 @@ import java.util.*
 object FileHelper {
 
     fun getDefaultFolderPath() : String =  ScanConstants.IMAGE_PATH
+
 
     /**
      * If folder path is default, it means we are creating new folder and adding image to it.
@@ -45,8 +47,18 @@ object FileHelper {
         }
     }
 
-    private fun createImageFile(folderPath: String): File {
+    fun createImageFile(folderPath: String): File {
         createFolder(folderPath)
         return File(folderPath, "doc_${Calendar.getInstance().timeInMillis}.jpg")
+    }
+
+    fun createTempImageFile(activity: Activity): File {
+        var path = "${activity.cacheDir}/temp_file"
+        createFolder(path)
+        var file = File(path, "doc_temp.jpg")
+        if (file.exists()) {
+            file.delete()
+        }
+        return file
     }
 }

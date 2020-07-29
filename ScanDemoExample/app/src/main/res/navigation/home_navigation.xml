@@ -25,7 +25,8 @@
 
         <argument
             android:name="savedDocViewModel"
-            app:argType="com.scanner.demo.home.SavedDocViewModel" />
+            app:argType="com.scanner.demo.home.SavedDocViewModel"
+            />
 
     </activity>
 

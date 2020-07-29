@@ -5,12 +5,12 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import com.scanlibrary.ScanConstants
 import com.scanlibrary.helpers.FileHelper
 import com.scanner.demo.helpers.FileInterimHelper
 import com.scanner.demo.helpers.IntentHelper
 import com.scanner.demo.home.SavedDocViewModel
 import com.scanner.demo.listeners.ItemClickListener
+import com.scanner.demo.scanlibrary.ScanConstants
 import com.scanner.demo.ui.base.PdfIconsLayout
 import kotlinx.android.synthetic.main.home_fragment.view.*
 import java.io.File
@@ -33,17 +33,17 @@ class FolderItemContentLayout : RelativeLayout {
         recyclerView.adapter = adapter
     }
 
-    fun listItems(filePath: String = FileHelper.getDefaultFolderPath()) {
-        FileInterimHelper.listItems(filePath, itemClickListener)?.apply {
+    fun listItems(filePath: String? = FileHelper.getDefaultFolderPath()) {
+        FileInterimHelper.getImagesInFolder(filePath, itemClickListener)?.apply {
             adapter.addAllItems(this)
         }
         adapter.addItem(getAddMoreItem(filePath), adapter.itemCount)
     }
 
-    private fun getAddMoreItem(folderPath: String):  SavedDocViewModel {
-        var addMoreItem = SavedDocViewModel()
+    private fun getAddMoreItem(folderPath: String?):  SavedDocViewModel {
+        var addMoreItem = SavedDocViewModel(null)
         addMoreItem.addMoreItem = true
-        addMoreItem.file = File(folderPath)
+       // addMoreItem.file = File(folderPath)
         addMoreItem.itemClickListener = itemClickListener
         return addMoreItem
     }

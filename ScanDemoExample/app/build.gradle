@@ -7,13 +7,25 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
+    androidExtensions {
+        experimental = true
+    }
+
     defaultConfig {
         applicationId "com.scanner.demo"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        ndk {
+            moduleName "Scanner"
+        }
     }
+    sourceSets.main {
+        jni.srcDirs = []
+        jniLibs.srcDir 'src/main/libs'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,7 +49,6 @@ ext {
 }
 
 dependencies {
-    implementation project(':scanlibrary')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'

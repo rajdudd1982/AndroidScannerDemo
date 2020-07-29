@@ -37,6 +37,6 @@ object AndroidHelper {
         }
     }
 
-    fun getAuthority() = appContext().getString(com.scanlibrary.R.string.authority)
+    fun getAuthority() = appContext().getString(R.string.authority)
 
 }

@@ -9,10 +9,10 @@ import android.os.Environment
 import android.os.FileUtils
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import com.scanlibrary.ScanConstants
 import com.scanlibrary.helpers.FileHelper
 import com.scanner.demo.helpers.*
 import com.scanner.demo.listeners.ItemClickListener
+import com.scanner.demo.scanlibrary.ScanConstants
 import kotlinx.android.synthetic.main.home_fragment.view.*
 import java.io.File
 
@@ -34,7 +34,7 @@ open class  HomeContentLayout : RelativeLayout {
     }
 
     fun listItems(filePath: String = FileHelper.getDefaultFolderPath()) {
-        FileInterimHelper.listItems(filePath, itemClickListener)?.apply {
+        FileInterimHelper.getImagesInFolder(ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH, itemClickListener)?.apply {
             adapter.addAllItems(this)
         }
     }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/original"
+        android:title="@string/original"
+        android:icon="@drawable/ic_image" />
+    <item android:id="@+id/magicColor"
+        android:title="@string/magic_color"
+        android:icon="@drawable/ic_enhamce_image" />
+    <item android:id="@+id/gray_mode"
+        android:title="@string/gray_mode"
+        android:icon="@drawable/ic_gray" />
+    <item android:id="@+id/black_white"
+        android:title="@string/black_white"
+        android:icon="@drawable/ic_black_and_white" />
+</menu>

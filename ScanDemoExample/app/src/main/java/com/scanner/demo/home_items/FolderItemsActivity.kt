@@ -24,6 +24,6 @@ class FolderItemsActivity :  BaseActivity() {
         val docViewModel = safeArgs.savedDocViewModel
 
         folderItemLayout.adapter.viewType = FolderItemsAdapter.ViewType.Grid
-        folderItemLayout.listItems(docViewModel.file.path)
+        folderItemLayout.listItems(docViewModel.image?.bucketDisplayName)
     }
 }

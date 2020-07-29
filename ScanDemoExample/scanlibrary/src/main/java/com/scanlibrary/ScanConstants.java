@@ -14,10 +14,18 @@ public class ScanConstants {
     public final static int OPEN_CAMERA = 4;
     public final static int OPEN_MEDIA = 5;
     public final static String SCANNED_RESULT = "scannedResult";
+
+    // Folder where list of files are present
     public final static String IMAGE_PATH = Environment.getExternalStorageDirectory().getPath() + "/scanSample";
 
     public final static String SELECTED_BITMAP = "selectedBitmap";
 
     public final static String FOLDER_PATH = "folder_path";
+
+
+    public final static String FINAL_IMAGE_PREFIX = "img_prefix";
+    public final static String FINAL_IMAGE_FOLDER_PREFIX_PATH = Environment.getExternalStorageDirectory().getPath() + "/ScannedDocuments";
+    public final static String INTERMEDIATE_FOLDERS_PREFIX = "imp_doc";
+
 
 }

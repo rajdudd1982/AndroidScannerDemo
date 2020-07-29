@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -18,8 +19,8 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.scanlibrary.Utils.getBitmap
-import com.scanlibrary.Utils.getUri
+import com.scanlibrary.helpers.Utils.getBitmap
+import com.scanlibrary.helpers.Utils.getUri
 import java.io.IOException
 import java.util.*
 
@@ -52,7 +53,7 @@ class ScanFragment : Fragment() {
     private fun init() {
         sourceImageView = mainView!!.findViewById<View>(R.id.sourceImageView) as ImageView
         scanButton = mainView!!.findViewById<View>(R.id.scanButton) as Button
-        scanButton!!.setOnClickListener(ScanButtonClickListener())
+        scanButton!!.setOnClickListener(ScanButtonClickListener(uri))
         sourceFrame = mainView!!.findViewById<View>(R.id.sourceFrame) as FrameLayout
         polygonView = mainView!!.findViewById<View>(R.id.polygonView) as PolygonView
         sourceFrame!!.post {
@@ -132,11 +133,11 @@ class ScanFragment : Fragment() {
         return orderedPoints
     }
 
-    private inner class ScanButtonClickListener : View.OnClickListener {
+    private inner class ScanButtonClickListener(uri: Uri?) : View.OnClickListener {
         override fun onClick(v: View) {
             val points = polygonView!!.points
             if (isScanPointsValid(points)) {
-                ScanAsyncTask(points).execute()
+                ScanAsyncTask(points).execute(uri)
             } else {
                 showErrorDialog()
             }
@@ -176,15 +177,17 @@ class ScanFragment : Fragment() {
         return (activity as ScanActivity?)!!.getScannedBitmap(original, x1, y1, x2, y2, x3, y3, x4, y4)
     }
 
-    private inner class ScanAsyncTask(private val points: Map<Int, PointF>) : AsyncTask<Void, Void, Bitmap>() {
+    private inner class ScanAsyncTask(private val points: Map<Int, PointF>) : AsyncTask<Uri?, Void, Bitmap>() {
         override fun onPreExecute() {
             super.onPreExecute()
             showProgressDialog(getString(R.string.scanning))
         }
 
-        protected override fun doInBackground(vararg params: Void): Bitmap {
+        protected override fun doInBackground(vararg params: Uri?): Bitmap {
             val bitmap = getScannedBitmap(original, points)
-            val uri = getUri(activity!!, bitmap)
+            var path: String? = params?.get(0)?.path
+            val finalPath: String = path ?: "dummy"
+            val uri = getUri(activity!!, bitmap, finalPath)
             scanner!!.onScanFinish(uri)
             return bitmap
         }
