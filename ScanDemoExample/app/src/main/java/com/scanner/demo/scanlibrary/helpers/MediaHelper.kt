@@ -57,7 +57,7 @@ object MediaHelper {
 
 
     fun postImagePick(activity: Activity, bitmap: Bitmap, folderPath: String) {
-        val uri = Utils.getUri(activity, bitmap, folderPath)
+        val uri = Utils.getUri(activity, bitmap)
         bitmap.recycle()
         (activity as IScanner).onBitmapSelect(uri)
     }

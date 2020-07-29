@@ -2,12 +2,9 @@ package com.scanner.demo.home
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
-import android.util.Size
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.navigation.Navigation
 import com.scanner.demo.R
 import com.scanner.demo.helpers.Image
@@ -44,7 +41,7 @@ class FolderListAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMode
             itemView.fileName.text = item.image?.name
 
             var cal = Calendar.getInstance()
-            cal.timeInMillis = item.file.lastModified()
+            //cal.timeInMillis = item.image?.duration
 
             itemView.creationTime.text = SimpleDateFormat("dd-MMM-yyyy HH:mm").format(cal.time)
 
@@ -66,8 +63,10 @@ class FolderListAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMode
     class SavedGridDocViewHolder(context: Context, view: View) : BaseViewHolder<SavedDocViewModel>(context, view) {
 
         override fun updateView(item: SavedDocViewModel, position: Int) {
-            val bitmap = BitmapFactory.decodeFile(item.file.path)
-            itemView.imageView.background = BitmapDrawable(context.resources, bitmap)
+            item.image?.apply {
+                val bitmap = Image.getBitmapFromUri(context.contentResolver, this.uri)//BitmapFactory.decodeFile(item.getImagePath())
+                itemView.imageView.setImageBitmap(bitmap)
+            }
             setIconLayout(item, position)
         }
 

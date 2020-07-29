@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.widget.RelativeLayout
 import com.scanlibrary.helpers.FileHelper
 import com.scanner.demo.helpers.FileInterimHelper
+import com.scanner.demo.helpers.Image
 import com.scanner.demo.helpers.IntentHelper
 import com.scanner.demo.home.SavedDocViewModel
 import com.scanner.demo.listeners.ItemClickListener
@@ -33,15 +34,15 @@ class FolderItemContentLayout : RelativeLayout {
         recyclerView.adapter = adapter
     }
 
-    fun listItems(filePath: String? = FileHelper.getDefaultFolderPath()) {
-        FileInterimHelper.getImagesInFolder(filePath, itemClickListener)?.apply {
+    fun listItems(folderImage: Image?) {
+        FileInterimHelper.getImagesInFolder(folderImage?.path, itemClickListener)?.apply {
             adapter.addAllItems(this)
         }
-        adapter.addItem(getAddMoreItem(filePath), adapter.itemCount)
+        adapter.addItem(getAddMoreItem(folderImage), adapter.itemCount)
     }
 
-    private fun getAddMoreItem(folderPath: String?):  SavedDocViewModel {
-        var addMoreItem = SavedDocViewModel(null)
+    private fun getAddMoreItem(folderImage: Image?):  SavedDocViewModel {
+        var addMoreItem = SavedDocViewModel(folderImage)
         addMoreItem.addMoreItem = true
        // addMoreItem.file = File(folderPath)
         addMoreItem.itemClickListener = itemClickListener

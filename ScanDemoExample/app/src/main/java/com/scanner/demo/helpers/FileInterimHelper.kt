@@ -22,7 +22,7 @@ object FileInterimHelper {
     }
 
 
-    fun getImagesInFolder(folderPath: String? = FileHelper.getDefaultFolderPath(), itemClickListener: ItemClickListener<SavedDocViewModel>) : ArrayList<SavedDocViewModel>? {
+    fun getImagesInFolder(folderPath: String?, itemClickListener: ItemClickListener<SavedDocViewModel>) : ArrayList<SavedDocViewModel>? {
         var savedDocViewModel: SavedDocViewModel
         var docViewModelList = ArrayList<SavedDocViewModel>()
         //if (!File(folderPath).isDirectory) return null
@@ -30,7 +30,6 @@ object FileInterimHelper {
 
         for (file in  Image.getSavedMediaFiles(folderPath)) {
             savedDocViewModel = SavedDocViewModel(file)
-            savedDocViewModel.file = File(file.uri.path)
             savedDocViewModel.itemClickListener = itemClickListener
             docViewModelList.add(savedDocViewModel)
         }

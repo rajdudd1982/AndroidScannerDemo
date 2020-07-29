@@ -8,9 +8,11 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.TextUtils
+import android.view.TextureView
 import com.scanner.demo.scanlibrary.ScanConstants
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 
 /**
@@ -46,7 +48,13 @@ object Utils {
             folderNameNew = "${ScanConstants.INTERMEDIATE_FOLDERS_PREFIX}_${System.currentTimeMillis()}"
             FileHelper.createFolder(File(ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH, folderNameNew).path)
         }
-        val relativeLocation = "${ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH}${File.pathSeparator}$folderNameNew"
+        var relativeLocation = "${ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH}${File.pathSeparator}"
+
+        // Storing files inside a folder
+        if (!TextUtils.isEmpty(folderNameNew)) {
+            relativeLocation = folderName + "_@@_" + "${System.currentTimeMillis()}";
+        }
+
 
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, "${ScanConstants.FINAL_IMAGE_PREFIX}_${System.currentTimeMillis().toString()}")

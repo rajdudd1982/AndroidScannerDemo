@@ -67,7 +67,7 @@ class HomeActivity : BaseActivity() {
             var bitmap: Bitmap? = null
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                contentResolver.delete(uri!!, null, null)
+               // contentResolver.delete(uri!!, null, null)
                 PdfConverter.createPdfFromBitmap(bitmap,   "${cacheDir}/file.pdf")
                 //convertToPdf(Collections.singletonList(File(uri.path)), "");
                 //scannedImageView.setImageBitmap(bitmap)

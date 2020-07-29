@@ -36,6 +36,7 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
         val bundle = Bundle()
         //scanned bitmap
         bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
+        bundle.putString(ScanConstants.FOLDER_PATH, getFolderPath())
         fragment.arguments = bundle
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
