@@ -11,30 +11,27 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageView
-import androidx.fragment.app.Fragment
-import com.scanlibrary.helpers.Utils.getBitmap
 import com.scanlibrary.helpers.Utils.getUri
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.*
+import com.scanner.demo.scanlibrary.BaseScanFragment
+import com.scanner.demo.scanlibrary.IScanner
+import com.scanner.demo.scanlibrary.ProgressDialogFragment
+import com.scanner.demo.scanlibrary.SingleButtonDialogFragment
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
-import java.io.IOException
+import kotlinx.android.synthetic.main.scan_fragment_layout.*
 
 /**
  * Created by jhansi on 29/03/15.
  */
-class ScanFragment : Fragment() {
-    private var scanButton: Button? = null
-    private var sourceImageView: ImageView? = null
-    private var sourceFrame: FrameLayout? = null
-    private var polygonView: PolygonView? = null
-    private var mainView: View? = null
+class ScanFragment : BaseScanFragment() {
     private var progressDialogFragment: ProgressDialogFragment? = null
+
     private var scanner: IScanner? = null
     private var original: Bitmap? = null
+
     private lateinit var bitmapTransformation: BitmapTransformation
+
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         if (activity !is IScanner) {
@@ -45,18 +42,14 @@ class ScanFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mainView = inflater.inflate(R.layout.scan_fragment_layout, null)
-        init()
-        return mainView
+        return inflater.inflate(R.layout.scan_fragment_layout, null)
     }
 
-    private fun init() {
-        sourceImageView = mainView!!.findViewById<View>(R.id.sourceImageView) as ImageView
-        scanButton = mainView!!.findViewById<View>(R.id.scanButton) as Button
-        scanButton!!.setOnClickListener(ScanButtonClickListener(uri))
-        sourceFrame = mainView!!.findViewById<View>(R.id.sourceFrame) as FrameLayout
-        polygonView = mainView!!.findViewById<View>(R.id.polygonView) as PolygonView
-        sourceFrame!!.post {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        scanButton.setOnClickListener(ScanButtonClickListener(uri))
+
+        sourceFrame.post {
             original = bitmap
             if (original != null) {
                 setBitmap(original!!)
@@ -64,41 +57,23 @@ class ScanFragment : Fragment() {
         }
     }
 
-    private val bitmap: Bitmap?
-        private get() {
-            val uri = uri
-            try {
-                val bitmap = getBitmap(activity!!, uri)
-                activity!!.contentResolver.delete(uri!!, null, null)
-                return bitmap
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            return null
-        }
-
-    private val uri: Uri?
-        private get() = arguments!!.getParcelable(ScanConstants.SELECTED_BITMAP)
-
     private fun setBitmap(original: Bitmap) {
         val scaledBitmap = bitmapTransformation.scaledBitmap(original, sourceFrame!!.width, sourceFrame!!.height)
-        sourceImageView!!.setImageBitmap(scaledBitmap)
+        sourceImageView.setImageBitmap(scaledBitmap)
         val tempBitmap = (sourceImageView!!.drawable as BitmapDrawable).bitmap
         val pointFs = getEdgePoints(tempBitmap)
-        polygonView!!.points = pointFs
-        polygonView!!.visibility = View.VISIBLE
+        polygonView.points = pointFs
+        polygonView.visibility = View.VISIBLE
         val padding = resources.getDimension(R.dimen.scanPadding).toInt()
         val layoutParams = FrameLayout.LayoutParams(tempBitmap.width + 2 * padding, tempBitmap.height + 2 * padding)
         layoutParams.gravity = Gravity.CENTER
-        polygonView!!.layoutParams = layoutParams
+        polygonView.layoutParams = layoutParams
     }
 
     private fun getEdgePoints(tempBitmap: Bitmap): Map<Int, PointF> {
         val pointFs = bitmapTransformation.getContourEdgePoints(tempBitmap)
         return orderedValidEdgePoints(tempBitmap, pointFs)
     }
-
-
 
     private fun orderedValidEdgePoints(tempBitmap: Bitmap, pointFs: List<PointF>): Map<Int, PointF> {
         var orderedPoints = polygonView!!.getOrderedPoints(pointFs)
@@ -153,16 +128,6 @@ class ScanFragment : Fragment() {
             bitmap.recycle()
             dismissDialog()
         }
-
     }
 
-    protected fun showProgressDialog(message: String?) {
-        progressDialogFragment = ProgressDialogFragment(message)
-        val fm = fragmentManager
-        progressDialogFragment!!.show(fm!!, ProgressDialogFragment::class.java.toString())
-    }
-
-    protected fun dismissDialog() {
-        progressDialogFragment!!.dismissAllowingStateLoss()
-    }
 }

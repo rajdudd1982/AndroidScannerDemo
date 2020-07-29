@@ -1,4 +1,4 @@
-package com.scanlibrary
+package com.scanner.demo.scanlibrary
 
 import android.app.AlertDialog
 import android.content.ComponentCallbacks2
@@ -6,9 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.fragment.app.FragmentActivity
+import com.scanlibrary.ScanFragment
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.IScanner
-import com.scanner.demo.scanlibrary.ScanConstants
+import com.scanner.demo.scanlibrary.result.ResultFragment
 
 
 open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, ComponentCallbacks2 {

@@ -1,4 +1,4 @@
-package com.scanlibrary
+package com.scanner.demo.scanlibrary.result
 
 import android.app.Activity
 import android.content.Intent
@@ -9,23 +9,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.scanlibrary.helpers.Utils
-import com.scanlibrary.helpers.Utils.getBitmap
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.ProgressDialogFragment
+import com.scanner.demo.scanlibrary.BaseScanFragment
+import com.scanner.demo.scanlibrary.ScanActivity
 import com.scanner.demo.scanlibrary.ScanConstants
-import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import kotlinx.android.synthetic.main.result_layout.*
-import java.io.IOException
 
 /**
  * Created by jhansi on 29/03/15.
  */
-class ResultFragment : Fragment() {
+class ResultFragment : BaseScanFragment() {
 
     private var original: Bitmap? = null
     private var transformed: Bitmap? = null
@@ -54,51 +48,6 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private val bitmap: Bitmap?
-        private get() {
-            val uri = uri
-            try {
-                original = getBitmap(activity!!, uri)
-                activity!!.contentResolver.delete(uri!!, null, null)
-                return original
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            return null
-        }
-
-    private val uri: Uri?
-        private get() = arguments!!.getParcelable(ScanConstants.SCANNED_RESULT)
-
-
-    private inner class DoneButtonClickListener(uri: Uri?) : View.OnClickListener {
-        override fun onClick(v: View) {
-            showProgressDialog(resources.getString(R.string.loading))
-            AsyncTask.execute {
-                try {
-                    val data = Intent()
-                    var bitmap = transformed
-                    if (bitmap == null) {
-                        bitmap = original
-                    }
-                    var path: String? = uri?.path
-                    val finalPath: String = path ?: "dummy"
-                    val uri = Utils.getUri(activity!!, bitmap!!, finalPath)
-                    data.putExtra(ScanConstants.SCANNED_RESULT, uri)
-                    activity!!.setResult(Activity.RESULT_OK, data)
-                    original!!.recycle()
-                    System.gc()
-                    activity!!.runOnUiThread {
-                        dismissDialog()
-                        activity!!.finish()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
     private inner class BWButtonClickListener(val type: BitmapTransformation.TransformationType) : View.OnClickListener {
         override fun onClick(v: View) {
             showProgressDialog(resources.getString(R.string.applying_filter))
@@ -121,25 +70,29 @@ class ResultFragment : Fragment() {
         }
     }
 
+    private inner class DoneButtonClickListener(uri: Uri?) : View.OnClickListener {
+        override fun onClick(v: View) {
+            showProgressDialog(resources.getString(R.string.loading))
+            AsyncTask.execute {
+                try {
+                    val data = Intent()
+                    var bitmap = transformed ?: original
 
-    @Synchronized
-    private fun showProgressDialog(message: String?) {
-        if (progressDialogFragment != null && progressDialogFragment!!.isVisible) {
-            // Before creating another loading dialog, close all opened loading dialogs (if any)
-            progressDialogFragment!!.dismissAllowingStateLoss()
+                    var path: String? = uri?.path
+                    val finalPath: String = path ?: "dummy"
+                    val uri = Utils.getUri(activity!!, bitmap!!, finalPath)
+                    data.putExtra(ScanConstants.SCANNED_RESULT, uri)
+                    activity!!.setResult(Activity.RESULT_OK, data)
+                    original!!.recycle()
+                    System.gc()
+                    activity!!.runOnUiThread {
+                        dismissDialog()
+                        activity!!.finish()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
-        progressDialogFragment = null
-        progressDialogFragment = ProgressDialogFragment(message)
-        val fm = fragmentManager
-        progressDialogFragment!!.show(fm!!, ProgressDialogFragment::class.java.toString())
-    }
-
-    @Synchronized
-    private fun dismissDialog() {
-        progressDialogFragment!!.dismissAllowingStateLoss()
-    }
-
-    companion object {
-        private var progressDialogFragment: ProgressDialogFragment? = null
     }
 }
