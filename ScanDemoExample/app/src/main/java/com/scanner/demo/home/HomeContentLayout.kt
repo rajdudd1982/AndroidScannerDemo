@@ -33,8 +33,8 @@ open class  HomeContentLayout : RelativeLayout {
         recyclerView.adapter = adapter
     }
 
-    fun listItems(filePath: String = FileHelper.getDefaultFolderPath()) {
-        FileInterimHelper.getImagesInFolder(ScanConstants.FOLDER_PREFIX_PATH, itemClickListener)?.apply {
+    fun listItems() {
+        FileInterimHelper.getImagesInFolder(true, ScanConstants.FOLDER_PREFIX_PATH, itemClickListener)?.apply {
             adapter.addAllItems(this)
         }
     }

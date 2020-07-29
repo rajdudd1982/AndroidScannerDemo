@@ -35,7 +35,7 @@ class FolderItemContentLayout : RelativeLayout {
     }
 
     fun listItems(folderImage: Image?) {
-        FileInterimHelper.getImagesInFolder(folderImage?.path, itemClickListener)?.apply {
+        FileInterimHelper.getImagesInFolder(false, folderImage?.path, itemClickListener)?.apply {
             adapter.addAllItems(this)
         }
         adapter.addItem(getAddMoreItem(folderImage), adapter.itemCount)

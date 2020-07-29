@@ -34,7 +34,7 @@ data class Image(val uri: Uri,
         }
 
 
-        fun getSavedMediaFiles(folderPath: String?) : MutableList<Image> {
+        fun getSavedMediaFiles(hasSubFolder: Boolean, folderPath: String?) : MutableList<Image> {
             val imageList = mutableListOf<Image>()
             val projection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 arrayOf(
@@ -58,9 +58,12 @@ data class Image(val uri: Uri,
 
             }
 
-            val selection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { "${MediaStore.Images.Media.RELATIVE_PATH}  like ?"} else "${MediaStore.Images.Media.DATA}  like ?"
+            var selection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { "${MediaStore.Images.Media.RELATIVE_PATH}  like ?"} else "${MediaStore.Images.Media.DATA}  like ?"
 
-            val selectionArgs = arrayOf("%${folderPath}%")
+            if (hasSubFolder) {
+                selection += " and " +  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { "${MediaStore.Images.Media.RELATIVE_PATH}  NOT like ?"} else "${MediaStore.Images.Media.DATA}  NOT like ?"
+            }
+            val selectionArgs = if(hasSubFolder) arrayOf("%${folderPath}%", "%@@%") else arrayOf("%${folderPath}%")
 
             val sortOrder = "${MediaStore.Images.Media.DISPLAY_NAME} ASC"
 
