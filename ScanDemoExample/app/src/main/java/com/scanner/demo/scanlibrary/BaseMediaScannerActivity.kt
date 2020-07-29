@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.result.ResultFragment
+import com.scanner.demo.scanlibrary.scan.ScanFragment
 
 
 open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, ComponentCallbacks2 {
@@ -32,7 +33,8 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
     override fun onScanFinish(uri: Uri?) {
         val fragment = ResultFragment()
         val bundle = Bundle()
-        bundle.putParcelable(ScanConstants.SCANNED_RESULT, uri)
+        //scanned bitmap
+        bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
         fragment.arguments = bundle
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()

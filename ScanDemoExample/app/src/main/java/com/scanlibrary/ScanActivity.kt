@@ -29,6 +29,7 @@ class ScanActivity : BaseMediaScannerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scan_layout)
 
+        // open camera or gallery
         when(intent.getIntExtra(ScanConstants.OPEN_INTENT_PREFERENCE, 0)){
             ScanConstants.OPEN_MEDIA -> MediaHelper.openMediaContent(this)
             ScanConstants.OPEN_CAMERA -> {
@@ -49,6 +50,7 @@ class ScanActivity : BaseMediaScannerActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+            // Perform operation for saving final image after cropping and graying out
             bitmap?.let { MediaHelper.postImagePick(this, it, getFolderPath()) }
         } else {
             finish()

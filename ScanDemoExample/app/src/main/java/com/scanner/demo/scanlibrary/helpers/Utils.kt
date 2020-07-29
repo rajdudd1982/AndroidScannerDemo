@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.MediaStore
 import android.text.TextUtils
 import com.scanner.demo.scanlibrary.ScanConstants
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -22,6 +23,13 @@ object Utils {
         //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
        //val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
         return initImageSaving(context, bitmap, folderPath) //Uri.parse(path)//
+    }
+    @JvmStatic
+    fun getUri(context: Context, bitmap: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path)
     }
 
     @JvmStatic

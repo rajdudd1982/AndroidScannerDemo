@@ -1,4 +1,4 @@
-package com.scanner.demo.scanlibrary
+package com.scanner.demo.scanlibrary.scan
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -13,8 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.scanlibrary.ScanActivity
+import com.scanlibrary.helpers.Utils
 import com.scanlibrary.helpers.Utils.getUri
 import com.scanner.demo.R
+import com.scanner.demo.scanlibrary.BaseScanFragment
+import com.scanner.demo.scanlibrary.IScanner
+import com.scanner.demo.scanlibrary.ProgressDialogFragment
+import com.scanner.demo.scanlibrary.SingleButtonDialogFragment
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import kotlinx.android.synthetic.main.scan_fragment_layout.*
 
@@ -114,9 +119,7 @@ class ScanFragment : BaseScanFragment() {
 
         protected override fun doInBackground(vararg params: Uri?): Bitmap {
             val bitmap = getScannedBitmap(original, points)
-            var path: String? = params?.get(0)?.path
-            val finalPath: String = path ?: "dummy"
-            val uri = getUri(activity!!, bitmap, finalPath)
+            val uri = Utils.getUri(activity!!, bitmap)
             scanner!!.onScanFinish(uri)
             return bitmap
         }
