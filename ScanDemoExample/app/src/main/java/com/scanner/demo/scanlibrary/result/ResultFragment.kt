@@ -31,7 +31,9 @@ class ResultFragment : BaseScanFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scannedImageView.setImageBitmap(bitmap)
+        original = bitmap
+
+        scannedImageView.setImageBitmap(original)
         doneButton!!.setOnClickListener(DoneButtonClickListener(uri))
 
         imageGradingNavigationView.setOnNavigationItemSelectedListener { item ->
