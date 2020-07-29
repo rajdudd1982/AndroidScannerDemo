@@ -18,6 +18,7 @@ import com.scanlibrary.helpers.Utils.getBitmap
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ProgressDialogFragment
 import com.scanner.demo.scanlibrary.ScanConstants
+import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import java.io.IOException
 
 /**
@@ -47,13 +48,13 @@ class ResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (view.findViewById<View>(R.id.imageGradingNavigationView) as BottomNavigationView).setOnNavigationItemSelectedListener { item ->
             if (item.itemId == R.id.original) {
-                OriginalButtonClickListener().onClick(view)
+                BWButtonClickListener(BitmapTransformation.TransformationType.Original).onClick(view)
             } else if (item.itemId == R.id.magicColor) {
-                MagicColorButtonClickListener().onClick(view)
+                BWButtonClickListener(BitmapTransformation.TransformationType.Magic).onClick(view)
             } else if (item.itemId == R.id.black_white) {
-                BWButtonClickListener().onClick(view)
+                BWButtonClickListener(BitmapTransformation.TransformationType.BW).onClick(view)
             } else if (item.itemId == R.id.gray_mode) {
-                GrayButtonClickListener().onClick(view)
+                BWButtonClickListener(BitmapTransformation.TransformationType.Gray).onClick(view)
             }
             false
         }
@@ -107,17 +108,17 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private inner class BWButtonClickListener : View.OnClickListener {
+    private inner class BWButtonClickListener(val type: BitmapTransformation.TransformationType) : View.OnClickListener {
         override fun onClick(v: View) {
             showProgressDialog(resources.getString(R.string.applying_filter))
+
             AsyncTask.execute {
                 try {
-                    transformed = (activity as ScanActivity?)!!.getBWBitmap(original!!)
+                    transformed = BitmapTransformation().bitmapTransformationByType(activity!! as ScanActivity, original!!, type)
                 } catch (e: OutOfMemoryError) {
                     activity!!.runOnUiThread {
                         transformed = original
                         scannedImageView!!.setImageBitmap(original)
-                        e.printStackTrace()
                         dismissDialog()
                         onClick(v)
                     }
@@ -130,65 +131,6 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private inner class MagicColorButtonClickListener : View.OnClickListener {
-        override fun onClick(v: View) {
-            showProgressDialog(resources.getString(R.string.applying_filter))
-            AsyncTask.execute {
-                try {
-                    transformed = (activity as ScanActivity?)!!.getMagicColorBitmap(original!!)
-                } catch (e: OutOfMemoryError) {
-                    activity!!.runOnUiThread {
-                        transformed = original
-                        scannedImageView!!.setImageBitmap(original)
-                        e.printStackTrace()
-                        dismissDialog()
-                        onClick(v)
-                    }
-                }
-                activity!!.runOnUiThread {
-                    scannedImageView!!.setImageBitmap(transformed)
-                    dismissDialog()
-                }
-            }
-        }
-    }
-
-    private inner class OriginalButtonClickListener : View.OnClickListener {
-        override fun onClick(v: View) {
-            try {
-                showProgressDialog(resources.getString(R.string.applying_filter))
-                transformed = original
-                scannedImageView!!.setImageBitmap(original)
-                dismissDialog()
-            } catch (e: OutOfMemoryError) {
-                e.printStackTrace()
-                dismissDialog()
-            }
-        }
-    }
-
-    private inner class GrayButtonClickListener : View.OnClickListener {
-        override fun onClick(v: View) {
-            showProgressDialog(resources.getString(R.string.applying_filter))
-            AsyncTask.execute {
-                try {
-                    transformed = (activity as ScanActivity?)!!.getGrayBitmap(original!!)
-                } catch (e: OutOfMemoryError) {
-                    activity!!.runOnUiThread {
-                        transformed = original
-                        scannedImageView!!.setImageBitmap(original)
-                        e.printStackTrace()
-                        dismissDialog()
-                        onClick(v)
-                    }
-                }
-                activity!!.runOnUiThread {
-                    scannedImageView!!.setImageBitmap(transformed)
-                    dismissDialog()
-                }
-            }
-        }
-    }
 
     @Synchronized
     protected fun showProgressDialog(message: String?) {

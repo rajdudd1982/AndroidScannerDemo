@@ -9,7 +9,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -23,8 +22,9 @@ import com.scanlibrary.helpers.Utils.getBitmap
 import com.scanlibrary.helpers.Utils.getUri
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.*
+import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import java.io.IOException
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Created by jhansi on 29/03/15.
@@ -100,8 +100,9 @@ class ScanFragment : Fragment() {
         return orderedValidEdgePoints(tempBitmap, pointFs)
     }
 
-    private fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
-        val points = (activity as ScanActivity?)!!.getPoints(tempBitmap)
+
+    fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
+        val points = (activity!! as ScanActivity).getPoints(tempBitmap)
         val x1 = points[0]
         val x2 = points[1]
         val x3 = points[2]
@@ -118,19 +119,10 @@ class ScanFragment : Fragment() {
         return pointFs
     }
 
-    private fun getOutlinePoints(tempBitmap: Bitmap): Map<Int, PointF> {
-        val outlinePoints: MutableMap<Int, PointF> = HashMap()
-        outlinePoints[0] = PointF(0F, 0F)
-        outlinePoints[1] = PointF(tempBitmap.width.toFloat(), 0F)
-        outlinePoints[2] = PointF(0F, tempBitmap.height.toFloat())
-        outlinePoints[3] = PointF(tempBitmap.width.toFloat(), tempBitmap.height.toFloat())
-        return outlinePoints
-    }
-
     private fun orderedValidEdgePoints(tempBitmap: Bitmap, pointFs: List<PointF>): Map<Int, PointF> {
         var orderedPoints = polygonView!!.getOrderedPoints(pointFs)
         if (!polygonView!!.isValidShape(orderedPoints)) {
-            orderedPoints = getOutlinePoints(tempBitmap)
+            orderedPoints = BitmapTransformation().getOutlinePoints(tempBitmap)
         }
         return orderedPoints
     }
@@ -176,7 +168,7 @@ class ScanFragment : Fragment() {
         val y3 = points[2]!!.y * yRatio
         val y4 = points[3]!!.y * yRatio
         Log.d("", "POints($x1,$y1)($x2,$y2)($x3,$y3)($x4,$y4)")
-        return (activity as ScanActivity?)!!.getScannedBitmap(original, x1, y1, x2, y2, x3, y3, x4, y4)
+        return (activity!! as ScanActivity).getScannedBitmap(original, x1, y1, x2, y2, x3, y3, x4, y4)
     }
 
     private inner class ScanAsyncTask(private val points: Map<Int, PointF>) : AsyncTask<Uri?, Void, Bitmap>() {
