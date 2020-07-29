@@ -6,7 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.fragment.app.FragmentActivity
-import com.scanlibrary.ScanFragment
+
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.result.ResultFragment
 

@@ -42,7 +42,7 @@ class BitmapTransformation(val activity: ScanActivity) {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, m, true)
     }
 
-    fun getContourEdgePoints(tempBitmap: Bitmap): List<PointF> {
+    fun getContourEdgePoints(activity: ScanActivity, tempBitmap: Bitmap): List<PointF> {
         val points = activity.getPoints(tempBitmap)
         val x1 = points[0]
         val x2 = points[1]

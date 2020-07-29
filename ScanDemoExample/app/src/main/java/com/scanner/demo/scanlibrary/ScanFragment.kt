@@ -1,4 +1,4 @@
-package com.scanlibrary
+package com.scanner.demo.scanlibrary
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.scanlibrary.helpers.Utils.getUri
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.*
 import com.scanner.demo.scanlibrary.result.BitmapTransformation
 import kotlinx.android.synthetic.main.scan_fragment_layout.*
 
@@ -35,10 +34,11 @@ class ScanFragment : BaseScanFragment() {
             throw ClassCastException("Activity must implement IScanner")
         }
         scanner = activity
-        bitmapTransformation = BitmapTransformation(activity!! as ScanActivity)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        bitmapTransformation = BitmapTransformation(activity!!  as ScanActivity)
         return inflater.inflate(R.layout.scan_fragment_layout, null)
     }
 
@@ -68,7 +68,7 @@ class ScanFragment : BaseScanFragment() {
     }
 
     private fun getEdgePoints(tempBitmap: Bitmap): Map<Int, PointF> {
-        val pointFs = bitmapTransformation.getContourEdgePoints(tempBitmap)
+        val pointFs = bitmapTransformation.getContourEdgePoints(activity!! as ScanActivity,  tempBitmap)
         return orderedValidEdgePoints(tempBitmap, pointFs)
     }
 
