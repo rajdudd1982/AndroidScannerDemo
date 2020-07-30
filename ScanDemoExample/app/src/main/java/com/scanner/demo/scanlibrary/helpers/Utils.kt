@@ -51,14 +51,18 @@ object Utils {
         var relativeLocation = "${ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH}${File.pathSeparator}"
 
         // Storing files inside a folder
-        if (!TextUtils.isEmpty(folderNameNew)) {
+        if (!TextUtils.isEmpty(folderName)) {
             relativeLocation = folderName + "_@@_" + "${System.currentTimeMillis()}";
+        } else {
+            relativeLocation += folderNameNew
         }
 
 
         val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "${ScanConstants.FINAL_IMAGE_PREFIX}_${System.currentTimeMillis().toString()}")
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "${ScanConstants.FINAL_IMAGE_PREFIX}_${System.currentTimeMillis()}")
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis());
+            put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)

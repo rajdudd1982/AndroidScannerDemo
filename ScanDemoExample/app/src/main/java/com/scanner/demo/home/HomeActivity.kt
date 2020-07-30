@@ -3,16 +3,16 @@ package com.scanner.demo.home
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.scanlibrary.BaseActivity
+import com.scanlibrary.ScanActivity
 import com.scanner.demo.R
 import com.scanner.demo.helpers.PdfConverter
-import com.scanlibrary.ScanActivity
 import com.scanner.demo.scanlibrary.ScanConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -66,9 +66,10 @@ class HomeActivity : BaseActivity() {
             val uri = data!!.extras!!.getParcelable<Uri>(ScanConstants.SCANNED_RESULT)
             var bitmap: Bitmap? = null
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                ((homeFragment as NavHostFragment).childFragmentManager?.fragments?.first() as HomeFragment).reloadListItems()
+                //bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                // contentResolver.delete(uri!!, null, null)
-                PdfConverter.createPdfFromBitmap(bitmap,   "${cacheDir}/file.pdf")
+                //PdfConverter.createPdfFromBitmap(bitmap,   "${cacheDir}/file.pdf")
                 //convertToPdf(Collections.singletonList(File(uri.path)), "");
                 //scannedImageView.setImageBitmap(bitmap)
             } catch (e: IOException) {
@@ -81,9 +82,6 @@ class HomeActivity : BaseActivity() {
         PdfConverter.createPdf(fileList, dest)
     }
 
-    private fun convertByteArrayToBitmap(data: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(data, 0, data.size)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

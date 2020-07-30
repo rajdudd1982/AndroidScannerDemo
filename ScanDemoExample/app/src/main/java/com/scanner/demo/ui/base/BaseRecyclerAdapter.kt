@@ -25,6 +25,12 @@ open abstract  class BaseRecyclerAdapter<T>() : RecyclerView.Adapter<BaseRecycle
         notifyDataSetChanged()
     }
 
+    fun setItemList(itemList : List<T> ){
+        this.itemList.clear()
+        this.itemList.addAll(itemList)
+        notifyDataSetChanged()
+    }
+
     fun addItem(item : T, position: Int = itemCount){
         this.itemList.add(item)
         notifyItemInserted(position)

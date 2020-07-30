@@ -13,14 +13,12 @@ import android.util.Log
 import kotlinx.android.parcel.Parcelize
 import java.io.FileDescriptor
 import java.io.IOException
-import java.io.Serializable
-import java.util.logging.Logger
 
 @Parcelize
 data class Image(val uri: Uri,
                  val name: String,
                  val duration: Int,
-                 val bucketId: Int,
+                 val dateModified: Long,
                  val bucketDisplayName: String,
                  val path: String?) : Parcelable {
 
@@ -41,7 +39,7 @@ data class Image(val uri: Uri,
                         MediaStore.Images.Media._ID,
                         MediaStore.Images.Media.DISPLAY_NAME,
                         MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                        MediaStore.Images.Media.BUCKET_ID,
+                        MediaStore.Images.Media.DATE_ADDED,
                         MediaStore.Images.Media.SIZE,
                         MediaStore.Images.Media.RELATIVE_PATH
                 )
@@ -51,7 +49,7 @@ data class Image(val uri: Uri,
                         MediaStore.Images.Media._ID,
                         MediaStore.Images.Media.DISPLAY_NAME,
                         MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                        MediaStore.Images.Media.BUCKET_ID,
+                        MediaStore.Images.Media.DATE_ADDED,
                         MediaStore.Images.Media.SIZE,
                         MediaStore.Images.Media.DATA
                 )
@@ -82,7 +80,7 @@ data class Image(val uri: Uri,
                         cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
                 val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
 
-                val bucketId = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID)
+                val dateModifiedId = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
                 val bucketNameId = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
                 val pathId =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     cursor.getColumnIndexOrThrow( MediaStore.Images.Media.RELATIVE_PATH)
@@ -94,7 +92,7 @@ data class Image(val uri: Uri,
                     // Get values of columns for a given video.
                     val id = cursor.getLong(idColumn)
                     val name = cursor.getString(nameColumn)
-                    val duration = 0
+                    val dateModified = cursor.getLong(dateModifiedId)
                     val size = cursor.getInt(sizeColumn)
 
                     val contentUri: Uri = ContentUris.withAppendedId(
@@ -104,7 +102,7 @@ data class Image(val uri: Uri,
 
                     // Stores column values and the contentUri in a local object
                     // that represents the media file.
-                    imageList += Image(contentUri, name, duration, cursor.getInt(bucketId), cursor.getString(bucketNameId),  cursor.getString(pathId))
+                    imageList += Image(contentUri, name, 0, dateModified, cursor.getString(bucketNameId),  cursor.getString(pathId))
                     Log.d("Demo", cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)))
                 }
             }

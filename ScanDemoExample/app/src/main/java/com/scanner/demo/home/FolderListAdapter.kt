@@ -20,12 +20,6 @@ class FolderListAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMode
     var viewType: ViewType = ViewType.Linear
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<SavedDocViewModel> {
-
-         if (viewType == ViewType.Linear.ordinal) {
-             return SavedDocViewHolder(context, layoutInflater.inflate(R.layout.home_list_item_layout, parent, false))
-         } else if(viewType == ViewType.Grid.ordinal) {
-             return SavedGridDocViewHolder(context, layoutInflater.inflate(R.layout.doc_grid_item_layout, parent, false))
-         }
         return SavedDocViewHolder(context, layoutInflater.inflate(R.layout.home_list_item_layout, parent, false))
     }
 
@@ -33,15 +27,16 @@ class FolderListAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMode
 
         override fun updateView(item: SavedDocViewModel, position: Int) {
 
+            var cal = Calendar.getInstance()
             item.image?.apply {
                 val bitmap = Image.getBitmapFromUri(context.contentResolver, this.uri)//BitmapFactory.decodeFile(item.getImagePath())
                 itemView.imageView.setImageBitmap(bitmap)
+
+                cal.timeInMillis = item.image.dateModified.toLong() *1000
+
             }
 
             itemView.fileName.text = item.image?.name
-
-            var cal = Calendar.getInstance()
-            //cal.timeInMillis = item.image?.duration
 
             itemView.creationTime.text = SimpleDateFormat("dd-MMM-yyyy HH:mm").format(cal.time)
 
@@ -58,26 +53,6 @@ class FolderListAdapter(context: Context) : BaseRecyclerAdapter<SavedDocViewMode
             savedDocViewModel.position = position
             itemView.pdfIconsLayout.savedDocViewModel = savedDocViewModel
         }
-    }
-
-    class SavedGridDocViewHolder(context: Context, view: View) : BaseViewHolder<SavedDocViewModel>(context, view) {
-
-        override fun updateView(item: SavedDocViewModel, position: Int) {
-            item.image?.apply {
-                val bitmap = Image.getBitmapFromUri(context.contentResolver, this.uri)//BitmapFactory.decodeFile(item.getImagePath())
-                itemView.imageView.setImageBitmap(bitmap)
-            }
-            setIconLayout(item, position)
-        }
-
-        private fun setIconLayout(savedDocViewModel: SavedDocViewModel, position: Int) {
-            savedDocViewModel.position = position
-            itemView.pdfIconsLayout.savedDocViewModel = savedDocViewModel
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return viewType.ordinal
     }
 
     enum class ViewType {

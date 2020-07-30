@@ -20,6 +20,10 @@ class HomeFragment : BaseFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         homeLayout.adapter.viewType = FolderListAdapter.ViewType.Linear
+        reloadListItems()
+    }
+
+    fun reloadListItems() {
         homeLayout.listItems()
     }
 }
