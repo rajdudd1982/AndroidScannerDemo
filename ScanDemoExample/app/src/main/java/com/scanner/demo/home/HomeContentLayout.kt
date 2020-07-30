@@ -50,7 +50,7 @@ open class  HomeContentLayout : RelativeLayout {
     }
 
     private fun onDeleteItem(savedDocViewModel: SavedDocViewModel) {
-        savedDocViewModel.file.delete()
+        savedDocViewModel.image?.deleteFile(true)
         try {
             adapter.removeItem(savedDocViewModel.position)
         } catch (e: Exception){

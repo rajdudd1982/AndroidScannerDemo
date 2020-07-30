@@ -122,7 +122,17 @@ data class Image(val uri: Uri,
             return null
 
         }
-
     }
 
+
+    fun deleteFile(hasSubFolder: Boolean) {
+        var selection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { "${MediaStore.Images.Media.RELATIVE_PATH}  like ?"} else "${MediaStore.Images.Media.DATA}  like ?"
+        val selectionArgs = arrayOf("%${path}%")
+
+        val itemCount = AndroidHelper.appContext().contentResolver.delete(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                selection,
+                selectionArgs)
+        Log.d("Items deleted count", itemCount?.toString())
+    }
 }

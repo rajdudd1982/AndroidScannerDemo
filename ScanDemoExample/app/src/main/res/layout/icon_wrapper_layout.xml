@@ -26,6 +26,6 @@
         style="@style/IconStyle"
         android:id="@+id/deleteDoc"
         android:layout_gravity="bottom"
-        app:iiv_icon="gmd_file_download" />
+        app:iiv_icon="gmd_trash" />
 
 </com.scanner.demo.ui.base.PdfIconsLayout>
