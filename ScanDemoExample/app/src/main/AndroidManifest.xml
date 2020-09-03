@@ -36,7 +36,7 @@
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".scanlibrary.scan.ScanActivity"
+            android:name="com.scanlibrary.ScanActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
         </activity>

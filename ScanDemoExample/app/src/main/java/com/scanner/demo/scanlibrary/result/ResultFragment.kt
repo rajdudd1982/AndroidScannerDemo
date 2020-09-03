@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import com.scanner.demo.scanlibrary.helpers.Utils
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.BaseScanFragment
-import com.scanner.demo.scanlibrary.scan.ScanActivity
+import com.scanlibrary.ScanActivity
 import com.scanner.demo.scanlibrary.ScanConstants
 import com.scanner.demo.scanlibrary.helpers.BitmapTransformationHelper
 import kotlinx.android.synthetic.main.result_layout.*

@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.scanner.demo.scanlibrary.helpers.Utils
 import com.scanner.demo.R
+import com.scanlibrary.ScanActivity
 import com.scanner.demo.scanlibrary.BaseScanFragment
 import com.scanner.demo.scanlibrary.IScanner
 import com.scanner.demo.scanlibrary.ProgressDialogFragment

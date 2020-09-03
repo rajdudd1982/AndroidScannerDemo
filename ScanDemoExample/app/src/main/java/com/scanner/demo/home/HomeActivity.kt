@@ -9,7 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.fragment.NavHostFragment
 import com.scanlibrary.BaseActivity
-import com.scanner.demo.scanlibrary.scan.ScanActivity
+import com.scanlibrary.ScanActivity
 import com.scanner.demo.R
 import com.scanner.demo.helpers.PdfConverter
 import com.scanner.demo.scanlibrary.ScanConstants

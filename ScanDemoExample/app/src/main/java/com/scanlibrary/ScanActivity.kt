@@ -1,4 +1,4 @@
-package com.scanner.demo.scanlibrary.scan
+package com.scanlibrary
 
 import android.app.Activity
 import android.content.Intent
@@ -6,22 +6,20 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import com.scanlibrary.helpers.MediaHelper
-import com.scanner.demo.scanlibrary.helpers.Utils
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ScanConstants
+import com.scanner.demo.scanlibrary.helpers.Utils
 import java.util.logging.Logger
 
 class ScanActivity : BaseMediaScannerActivity() {
     private lateinit var fileUri: Uri
+    init {
 
-    companion object {
-        init {
-            try {
-               // System.loadLibrary("opencv_java3")
-                System.loadLibrary("Scanner")
-            } catch (e: java.lang.Exception){
-                Logger.getLogger(e.message)
-            }
+        try {
+            // System.loadLibrary("opencv_java3")
+            System.loadLibrary("Scanner")
+        } catch (e: java.lang.Exception){
+            Logger.getLogger(e.message)
         }
     }
 
@@ -62,7 +60,6 @@ class ScanActivity : BaseMediaScannerActivity() {
         }
     }
 
-
     /**
      * Save cached temporary image into media
      */
@@ -73,13 +70,9 @@ class ScanActivity : BaseMediaScannerActivity() {
     }
 
     external fun getScannedBitmap(bitmap: Bitmap, x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Bitmap
-
     external fun getGrayBitmap(bitmap: Bitmap): Bitmap
-
     external fun getMagicColorBitmap(bitmap: Bitmap): Bitmap
-
     external fun getBWBitmap(bitmap: Bitmap): Bitmap
-
     external fun getPoints(bitmap: Bitmap): FloatArray
 
 }

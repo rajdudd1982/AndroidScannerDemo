@@ -6,7 +6,7 @@ import android.graphics.PointF
 import android.graphics.RectF
 import android.util.Log
 import android.widget.ImageView
-import com.scanner.demo.scanlibrary.scan.ScanActivity
+import com.scanlibrary.ScanActivity
 import java.util.ArrayList
 import java.util.HashMap
 
