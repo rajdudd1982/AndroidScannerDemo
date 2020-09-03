@@ -17,6 +17,10 @@ import java.io.IOException
 /**
  * Created by jhansi on 05/04/15.
  */
+//https://github.com/nextcloud/android/issues/6150
+//https://android-developers.googleblog.com/2019/04/android-q-scoped-storage-best-practices.html
+//Scoped Storage
+https://www.raywenderlich.com/9577211-scoped-storage-in-android-10-getting-started#:~:text=In%20Android%2010%2C%20Google%20introduced,from%20the%20device's%20shared%20storage.
 object Utils {
     @JvmStatic
     fun getUri(context: Context, bitmap: Bitmap, folderPath: String): Uri? {

@@ -1,29 +1,22 @@
-package com.scanner.demo.scanlibrary
+package com.scanner.demo.scanlibrary.scan
 
 import android.app.AlertDialog
 import android.content.ComponentCallbacks2
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.fragment.app.FragmentActivity
 
 import com.scanner.demo.R
+import com.scanner.demo.scanlibrary.IScanner
+import com.scanner.demo.scanlibrary.ScanConstants
 import com.scanner.demo.scanlibrary.result.ResultFragment
-import com.scanner.demo.scanlibrary.scan.ScanFragment
-
 
 open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, ComponentCallbacks2 {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-    }
-
     override fun onBitmapSelect(uri: Uri?) {
         val fragment = ScanFragment()
-        val bundle = Bundle()
-        bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
-        bundle.putString(ScanConstants.FOLDER_PATH, getFolderPath())
-        fragment.arguments = bundle
+        fragment.arguments = getBundle(uri)
+
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.content, fragment)
@@ -33,16 +26,21 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
 
     override fun onScanFinish(uri: Uri?) {
         val fragment = ResultFragment()
-        val bundle = Bundle()
-        //scanned bitmap
-        bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
-        bundle.putString(ScanConstants.FOLDER_PATH, getFolderPath())
-        fragment.arguments = bundle
+        fragment.arguments = getBundle(uri)
+
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.content, fragment)
         fragmentTransaction.addToBackStack(ResultFragment::class.java.toString())
         fragmentTransaction.commit()
+    }
+
+    private fun getBundle(uri: Uri?) : Bundle {
+        val bundle = Bundle()
+        //scanned bitmap
+        bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
+        bundle.putString(ScanConstants.FOLDER_PATH, getFolderPath())
+        return bundle
     }
 
     override fun onTrimMemory(level: Int) {

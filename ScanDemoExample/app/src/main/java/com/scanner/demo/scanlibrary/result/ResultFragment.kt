@@ -9,11 +9,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.scanlibrary.helpers.Utils
+import com.scanner.demo.scanlibrary.helpers.Utils
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.BaseScanFragment
-import com.scanlibrary.ScanActivity
+import com.scanner.demo.scanlibrary.scan.ScanActivity
 import com.scanner.demo.scanlibrary.ScanConstants
+import com.scanner.demo.scanlibrary.helpers.BitmapTransformationHelper
 import kotlinx.android.synthetic.main.result_layout.*
 
 /**
@@ -38,24 +39,24 @@ class ResultFragment : BaseScanFragment() {
 
         imageGradingNavigationView.setOnNavigationItemSelectedListener { item ->
             if (item.itemId == R.id.original) {
-                BWButtonClickListener(BitmapTransformation.TransformationType.Original).onClick(view)
+                BWButtonClickListener(BitmapTransformationHelper.TransformationType.Original).onClick(view)
             } else if (item.itemId == R.id.magicColor) {
-                BWButtonClickListener(BitmapTransformation.TransformationType.Magic).onClick(view)
+                BWButtonClickListener(BitmapTransformationHelper.TransformationType.Magic).onClick(view)
             } else if (item.itemId == R.id.black_white) {
-                BWButtonClickListener(BitmapTransformation.TransformationType.BW).onClick(view)
+                BWButtonClickListener(BitmapTransformationHelper.TransformationType.BW).onClick(view)
             } else if (item.itemId == R.id.gray_mode) {
-                BWButtonClickListener(BitmapTransformation.TransformationType.Gray).onClick(view)
+                BWButtonClickListener(BitmapTransformationHelper.TransformationType.Gray).onClick(view)
             }
             false
         }
     }
 
-    private inner class BWButtonClickListener(val type: BitmapTransformation.TransformationType) : View.OnClickListener {
+    private inner class BWButtonClickListener(val type: BitmapTransformationHelper.TransformationType) : View.OnClickListener {
         override fun onClick(v: View) {
             showProgressDialog(resources.getString(R.string.applying_filter))
             AsyncTask.execute {
                 try {
-                    transformed = BitmapTransformation(activity!! as ScanActivity).bitmapTransformationByType(original!!, type)
+                    transformed = BitmapTransformationHelper(activity!! as ScanActivity).bitmapTransformationByType(original!!, type)
                 } catch (e: OutOfMemoryError) {
                     activity!!.runOnUiThread {
                         transformed = original

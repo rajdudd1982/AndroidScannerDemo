@@ -51,14 +51,4 @@ object FileHelper {
         createFolder(folderPath)
         return File(folderPath, "doc_${Calendar.getInstance().timeInMillis}.jpg")
     }
-
-    fun createTempImageFile(activity: Activity): File {
-        var path = "${activity.cacheDir}/temp_file"
-        createFolder(path)
-        var file = File(path, "doc_temp.jpg")
-        if (file.exists()) {
-            file.delete()
-        }
-        return file
-    }
 }

@@ -12,15 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.scanlibrary.ScanActivity
-import com.scanlibrary.helpers.Utils
-import com.scanlibrary.helpers.Utils.getUri
+import com.scanner.demo.scanlibrary.helpers.Utils
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.BaseScanFragment
 import com.scanner.demo.scanlibrary.IScanner
 import com.scanner.demo.scanlibrary.ProgressDialogFragment
 import com.scanner.demo.scanlibrary.SingleButtonDialogFragment
-import com.scanner.demo.scanlibrary.result.BitmapTransformation
+import com.scanner.demo.scanlibrary.helpers.BitmapTransformationHelper
 import kotlinx.android.synthetic.main.scan_fragment_layout.*
 
 /**
@@ -32,7 +30,7 @@ class ScanFragment : BaseScanFragment() {
     private var scanner: IScanner? = null
     private var original: Bitmap? = null
 
-    private lateinit var bitmapTransformation: BitmapTransformation
+    private lateinit var bitmapTransformation: BitmapTransformationHelper
 
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
@@ -44,7 +42,7 @@ class ScanFragment : BaseScanFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        bitmapTransformation = BitmapTransformation(activity!!  as ScanActivity)
+        bitmapTransformation = BitmapTransformationHelper(activity!!  as ScanActivity)
         return inflater.inflate(R.layout.scan_fragment_layout, null)
     }
 

@@ -5,7 +5,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import android.provider.MediaStore
 import androidx.core.net.toUri
+import com.scanner.demo.home.SavedDocViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -54,7 +56,7 @@ object PdfConverter {
 
     @JvmStatic
     @Throws(IOException::class)
-    fun createPdfFromBitmap(bitmap: Bitmap, dest: String?) {
+    fun createPdfFromBitmap(imageList: ArrayList<SavedDocViewModel>, dest: String?) {
 
         var document = PdfDocument();
 
@@ -68,8 +70,15 @@ object PdfConverter {
         val matrix = Matrix()
         matrix.setScale(500F, 500F)
 
+        var bitmap: Bitmap
+        for (viewModel in imageList) {
+            bitmap = MediaStore.Images.Media.getBitmap(AndroidHelper.appContext().contentResolver, viewModel?.image?.uri);
+            page.canvas.drawBitmap(bitmap, 0F,0F, Paint())
+            bitmap.recycle()
+        }
+
         // draw something on the page
-        page.canvas.drawBitmap(bitmap, 0F,0F, Paint())
+
 
         // finish the page
         document.finishPage(page);

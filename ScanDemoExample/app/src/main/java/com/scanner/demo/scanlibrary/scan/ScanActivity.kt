@@ -1,4 +1,4 @@
-package com.scanlibrary
+package com.scanner.demo.scanlibrary.scan
 
 import android.app.Activity
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import com.scanlibrary.helpers.MediaHelper
+import com.scanner.demo.scanlibrary.helpers.Utils
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.BaseMediaScannerActivity
 import com.scanner.demo.scanlibrary.ScanConstants
 import java.util.logging.Logger
 
@@ -28,13 +28,18 @@ class ScanActivity : BaseMediaScannerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scan_layout)
+        // Clear cache directory
+        com.scanner.demo.helpers.FileHelper. clearCacheDir()
+        openCameraOrGallery()
+    }
 
+    private fun openCameraOrGallery(){
         // open camera or gallery
         when(intent.getIntExtra(ScanConstants.OPEN_INTENT_PREFERENCE, 0)){
-            ScanConstants.OPEN_MEDIA -> MediaHelper.openMediaContent(this)
+            ScanConstants.OPEN_MEDIA -> MediaHelper.openGallery(this)
             ScanConstants.OPEN_CAMERA -> {
-                fileUri = Uri.fromFile(MediaHelper.openCamera(this, getFolderPath()))
-              }
+                fileUri = Uri.fromFile(MediaHelper.openCamera(this))
+            }
         }
     }
 
@@ -51,12 +56,21 @@ class ScanActivity : BaseMediaScannerActivity() {
                 e.printStackTrace()
             }
             // Perform operation for saving final image after cropping and graying out
-            bitmap?.let { MediaHelper.postImagePick(this, it, getFolderPath()) }
+            bitmap?.let {postImagePick(this, it) }
         } else {
             finish()
         }
     }
 
+
+    /**
+     * Save cached temporary image into media
+     */
+    private fun postImagePick(activity: Activity, bitmap: Bitmap) {
+        val uri = Utils.insertCachedImage(bitmap)
+        bitmap.recycle()
+        onBitmapSelect(uri)
+    }
 
     external fun getScannedBitmap(bitmap: Bitmap, x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Bitmap
 

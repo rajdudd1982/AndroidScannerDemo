@@ -10,19 +10,21 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.scanner.demo.R
-import com.scanner.demo.scanlibrary.IScanner
+import com.scanner.demo.helpers.FileHelper
 import com.scanner.demo.scanlibrary.ScanConstants
 import java.io.File
 import java.io.IOException
-
+import java.util.*
 
 object MediaHelper {
 
+    /**
+     * Open camera..
+     */
     @JvmStatic
-    fun openCamera(activity: Activity, folderPath: String = FileHelper.getDefaultFolderPath()) : File? {
+    fun openCamera(activity: Activity) : File? {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        val file: File? = FileHelper.createTempImageFile(activity)
+        val file: File? = FileHelper.createSharedCacheFile("doc_${Calendar.getInstance().timeInMillis}.png")
         file?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val tempFileUri = FileProvider.getUriForFile(activity,
@@ -40,27 +42,18 @@ object MediaHelper {
     }
 
 
+    /**
+     * Open Gallery
+     */
     @JvmStatic
-    fun openMediaContent(activity: Activity) {
+    fun openGallery(activity: Activity) {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), ScanConstants.PICKFILE_REQUEST_CODE)
-
-//        val intent = Intent(Intent.ACTION_GET_CONTENT)
-//        intent.addCategory(Intent.CATEGORY_OPENABLE)
-//        intent.type = "image/*"
-//        activity.startActivityForResult(intent, ScanConstants.PICKFILE_REQUEST_CODE)
     }
 
-
-
-    fun postImagePick(activity: Activity, bitmap: Bitmap, folderPath: String) {
-        val uri = Utils.getUri(activity, bitmap)
-        bitmap.recycle()
-        (activity as IScanner).onBitmapSelect(uri)
-    }
 
     @Throws(IOException::class)
     fun getBitmap(activity: Activity, selectedImg: Uri?): Bitmap? {

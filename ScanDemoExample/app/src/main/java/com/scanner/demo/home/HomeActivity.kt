@@ -8,9 +8,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.scanlibrary.BaseActivity
-import com.scanlibrary.ScanActivity
+import com.scanner.demo.scanlibrary.scan.ScanActivity
 import com.scanner.demo.R
 import com.scanner.demo.helpers.PdfConverter
 import com.scanner.demo.scanlibrary.ScanConstants
@@ -21,6 +20,7 @@ import java.io.IOException
 class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()

@@ -3,7 +3,7 @@ package com.scanner.demo.scanlibrary
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.fragment.app.Fragment
-import com.scanlibrary.helpers.Utils
+import com.scanner.demo.scanlibrary.helpers.Utils
 import java.io.IOException
 
 open class BaseScanFragment @JvmOverloads constructor(contentLayoutId: Int=0): Fragment(contentLayoutId) {

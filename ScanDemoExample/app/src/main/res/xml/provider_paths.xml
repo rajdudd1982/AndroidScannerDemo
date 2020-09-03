@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="external_files" path="."/>
-    <cache-path name="shared_document" path="shared_document"/>
-    <cache-path name="temp_file" path="temp_file"/>
+    <external-path name="external_files" path="scanned_images"/>
+    <external-path name="temp_external_files" path="temp_scanned_images"/>
+    <cache-path name="scanned_images" path="scanned_images"/>
+    <cache-path name="temp_scanned_images" path="temp_scanned_images"/>
+
+
 </paths>

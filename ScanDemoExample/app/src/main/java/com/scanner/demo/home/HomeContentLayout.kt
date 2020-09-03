@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import com.scanlibrary.helpers.FileHelper
 import com.scanner.demo.helpers.AndroidHelper
 import com.scanner.demo.helpers.FileInterimHelper
 import com.scanner.demo.helpers.IntentHelper
@@ -13,7 +12,6 @@ import com.scanner.demo.helpers.PdfConverter
 import com.scanner.demo.listeners.ItemClickListener
 import com.scanner.demo.scanlibrary.ScanConstants
 import kotlinx.android.synthetic.main.home_fragment.view.*
-import java.io.File
 
 open class  HomeContentLayout : RelativeLayout {
     lateinit var adapter: FolderListAdapter
@@ -59,10 +57,7 @@ open class  HomeContentLayout : RelativeLayout {
     }
 
     private fun onCreatePdf(savedDocViewModel: SavedDocViewModel) {
-        var pdfFolder = File(context.cacheDir, "shared_document")
-        FileHelper.createFolder(pdfFolder.path)
-        var pdfFile = File(pdfFolder, "doc.pdf")
-        pdfFile.createNewFile()
+        var pdfFile = com.scanner.demo.helpers.FileHelper.createExternalStorageFile("", savedDocViewModel.file.name)
         PdfConverter.createPdf(savedDocViewModel.file.listFiles().asList(), pdfFile.path)
         AndroidHelper.openPdfApplication(pdfFile.path)
     }

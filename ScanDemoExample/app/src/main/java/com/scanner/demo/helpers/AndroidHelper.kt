@@ -39,4 +39,5 @@ object AndroidHelper {
 
     fun getAuthority() = appContext().getString(R.string.authority)
 
+
 }

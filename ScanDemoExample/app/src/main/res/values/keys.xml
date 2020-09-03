@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="authority">com.scanlibrary.provide</string>
+    <string name="scanned_images">scanned_images</string>
 </resources>

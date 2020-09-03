@@ -1,4 +1,4 @@
-package com.scanner.demo.scanlibrary.result
+package com.scanner.demo.scanlibrary.helpers
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
@@ -6,11 +6,11 @@ import android.graphics.PointF
 import android.graphics.RectF
 import android.util.Log
 import android.widget.ImageView
-import com.scanlibrary.ScanActivity
+import com.scanner.demo.scanlibrary.scan.ScanActivity
 import java.util.ArrayList
 import java.util.HashMap
 
-class BitmapTransformation(val activity: ScanActivity) {
+class BitmapTransformationHelper(val activity: ScanActivity) {
 
     fun bitmapTransformationByType(original: Bitmap, type: TransformationType): Bitmap {
         var bitmap: Bitmap = original

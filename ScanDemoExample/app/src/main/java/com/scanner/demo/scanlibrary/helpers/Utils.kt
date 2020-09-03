@@ -1,4 +1,4 @@
-package com.scanlibrary.helpers
+package com.scanner.demo.scanlibrary.helpers
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -7,24 +7,24 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.text.TextUtils
-import android.view.TextureView
-import com.scanner.demo.scanlibrary.ScanConstants
+import android.util.Log
+import com.scanner.demo.helpers.AndroidHelper
+import com.scanner.demo.helpers.FileHelper
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
+import java.util.logging.Logger
 
 /**
  * Created by jhansi on 05/04/15.
  */
 object Utils {
+    private val TAG = Utils.javaClass.name
     @JvmStatic
     fun getUri(context: Context, bitmap: Bitmap, folderPath: String?): Uri? {
         //val bytes = ByteArrayOutputStream()
         //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
        //val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
-        return initImageSaving(context, bitmap, folderPath) //Uri.parse(path)//
+        return getUri(context, bitmap) //Uri.parse(path)//
     }
     @JvmStatic
     fun getUri(context: Context, bitmap: Bitmap): Uri? {
@@ -40,43 +40,21 @@ object Utils {
         return MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
     }
 
+    fun insertCachedImage(bitmap: Bitmap) : Uri? {
+        var fileName = FileHelper.createExternalStorageTempFile("temp_${System.currentTimeMillis()}")
+        return initImageSaving(bitmap, FileHelper.getExternalStorageTempRelativePath(), fileName.name)
+    }
+
+
     @SuppressLint("InlinedApi", "ObsoleteSdkInt")
-    private fun initImageSaving(context: Context, bitmap: Bitmap, folderName: String?)  : Uri? {
-        FileHelper.createFolder(ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH)
-        var folderNameNew = folderName
-        if (TextUtils.isEmpty(folderName)) {
-            folderNameNew = "${ScanConstants.INTERMEDIATE_FOLDERS_PREFIX}_${System.currentTimeMillis()}"
-            FileHelper.createFolder(File(ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH, folderNameNew).path)
-        }
-        var relativeLocation = "${ScanConstants.FINAL_IMAGE_FOLDER_PREFIX_PATH}${File.pathSeparator}"
+    private fun initImageSaving(bitmap: Bitmap, folderPath: String, fileName: String)  : Uri? {
+        val contentValues = getContentValues(folderPath, fileName)
 
-        // Storing files inside a folder
-        if (!TextUtils.isEmpty(folderName)) {
-            relativeLocation = folderName + "_@@_" + "${System.currentTimeMillis()}";
-        } else {
-            relativeLocation += folderNameNew
-        }
+        Log.d(TAG, " Folder Name: $folderPath uri: ${MediaStore.Images.Media.EXTERNAL_CONTENT_URI}")
 
-
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "${ScanConstants.FINAL_IMAGE_PREFIX}_${System.currentTimeMillis()}")
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis());
-            put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
-                put(MediaStore.MediaColumns.IS_PENDING, 1)
-            } else {
-                put(MediaStore.MediaColumns.DATA, relativeLocation)
-            }
-        }
-
-        val resolver = context.contentResolver
+        val resolver = AndroidHelper.appContext().contentResolver
         val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
         try {
-
             uri?.let { uri ->
                 val stream = resolver.openOutputStream(uri)
 
@@ -99,4 +77,23 @@ object Utils {
         }
         return uri
     }
+
+    private fun getContentValues(folderPath: String, fileName: String) : ContentValues {
+        var relativeLocation = "$folderPath"
+
+        return ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "$fileName")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis());
+            put(MediaStore.MediaColumns.DATE_TAKEN, System.currentTimeMillis());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            } else {
+                put(MediaStore.MediaColumns.DATA, relativeLocation)
+            }
+        }
+    }
+
 }

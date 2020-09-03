@@ -36,9 +36,13 @@ class FolderItemContentLayout : RelativeLayout {
 
     fun listItems(folderImage: Image?) {
         FileInterimHelper.getImagesInFolder(false, folderImage?.path, itemClickListener)?.apply {
-            adapter.addAllItems(this)
+            adapter.setItemList(this)
         }
         adapter.addItem(getAddMoreItem(folderImage), adapter.itemCount)
+    }
+
+    fun getItemsList() :  ArrayList<SavedDocViewModel> {
+        return adapter.itemList
     }
 
     private fun getAddMoreItem(folderImage: Image?):  SavedDocViewModel {
