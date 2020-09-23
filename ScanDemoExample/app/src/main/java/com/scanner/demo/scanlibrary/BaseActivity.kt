@@ -4,35 +4,11 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.scanner.demo.scanlibrary.helpers.PermissionHelper
 
 open abstract class BaseActivity : AppCompatActivity() {
 
-     enum class PermissionCode {
-         WRITE_PERMISSION {
-             override fun getPermission(): String {
-                 return android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-             }
-
-             override fun getRequestCode(): Int {
-                 return 1001
-             }
-         },
-
-         CAMERA_PERMISSION {
-             override fun getPermission(): String {
-                 return android.Manifest.permission.CAMERA
-             }
-
-             override fun getRequestCode(): Int {
-                 return 1002
-             }
-         };
-
-         abstract fun getPermission() : String
-         abstract fun getRequestCode() : Int
-     }
-
-    fun requestPermission(permissionCode: PermissionCode) {
+    fun requestPermission(permissionCode: PermissionHelper.PermissionCode) {
         var permission = permissionCode.getPermission()
         var requestCode = permissionCode.getRequestCode()
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {

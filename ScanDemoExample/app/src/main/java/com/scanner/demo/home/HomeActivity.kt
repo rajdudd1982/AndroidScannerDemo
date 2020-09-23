@@ -13,6 +13,7 @@ import com.scanlibrary.ScanActivity
 import com.scanner.demo.R
 import com.scanner.demo.helpers.PdfConverter
 import com.scanner.demo.scanlibrary.ScanConstants
+import com.scanner.demo.scanlibrary.helpers.PermissionHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
@@ -27,14 +28,14 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun init() {
-        requestPermission(PermissionCode.WRITE_PERMISSION)
+        requestPermission(PermissionHelper.PermissionCode.WRITE_PERMISSION)
         homeNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.gallery -> {
                     startScan(ScanConstants.OPEN_MEDIA)
                 }
                 R.id.camera -> {
-                    requestPermission(PermissionCode.CAMERA_PERMISSION)
+                    requestPermission(PermissionHelper.PermissionCode.CAMERA_PERMISSION)
                 }
                 R.id.scan -> {
                     startScan(0)
