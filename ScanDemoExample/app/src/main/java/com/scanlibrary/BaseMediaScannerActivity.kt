@@ -14,7 +14,7 @@ import com.scanner.demo.scanlibrary.scan.ScanFragment
 
 open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, ComponentCallbacks2 {
 
-    override fun onBitmapSelect(uri: Uri?) {
+    override fun onBitmapSelect(uri: List<Uri?>) {
         val fragment = ScanFragment()
         fragment.arguments = getBundle(uri)
 
@@ -25,7 +25,9 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
         fragmentTransaction.commit()
     }
 
-    override fun onScanFinish(uri: Uri?) {
+
+
+    override fun onScanFinish(uri: List<Uri?>) {
         val fragment = ResultFragment()
         fragment.arguments = getBundle(uri)
 
@@ -36,10 +38,10 @@ open abstract class BaseMediaScannerActivity : FragmentActivity(), IScanner, Com
         fragmentTransaction.commit()
     }
 
-    private fun getBundle(uri: Uri?) : Bundle {
+    private fun getBundle(uri: List<Uri?>) : Bundle {
         val bundle = Bundle()
         //scanned bitmap
-        bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri)
+        bundle.putParcelableArrayList(ScanConstants.SELECTED_BITMAP, ArrayList(uri))
         bundle.putString(ScanConstants.FOLDER_PATH, getFolderPath())
         return bundle
     }

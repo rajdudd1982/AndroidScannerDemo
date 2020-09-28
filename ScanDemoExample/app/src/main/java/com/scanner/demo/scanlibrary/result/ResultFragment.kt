@@ -35,7 +35,7 @@ class ResultFragment : BaseScanFragment() {
         original = bitmap
 
         scannedImageView.setImageBitmap(original)
-        doneButton!!.setOnClickListener(DoneButtonClickListener(uri))
+        doneButton!!.setOnClickListener(DoneButtonClickListener(uris[0]))
 
         imageGradingNavigationView.setOnNavigationItemSelectedListener { item ->
             if (item.itemId == R.id.original) {
@@ -73,7 +73,7 @@ class ResultFragment : BaseScanFragment() {
         }
     }
 
-    private inner class DoneButtonClickListener(uri: Uri?) : View.OnClickListener {
+    private inner class DoneButtonClickListener(val uri: Uri?) : View.OnClickListener {
         override fun onClick(v: View) {
             showProgressDialog(resources.getString(R.string.loading))
             AsyncTask.execute {

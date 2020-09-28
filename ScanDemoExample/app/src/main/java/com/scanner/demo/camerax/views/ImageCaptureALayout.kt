@@ -26,7 +26,7 @@ class ImageCaptureALayout  @JvmOverloads constructor(context: Context, attrs: At
     private lateinit var cameraXHelper: CameraXHelper
     private lateinit var activity: AppCompatActivity
     private lateinit var file: File
-    private  var cachedViewModels: ArrayList<CachedFileViewModel> = ArrayList()
+    var cachedViewModels: ArrayList<CachedFileViewModel> = ArrayList()
 
     override fun onFinishInflate() {
         super.onFinishInflate()

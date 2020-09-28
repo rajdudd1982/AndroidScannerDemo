@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scanner.demo.scanlibrary.scan.ScanLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scanLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/scanButton"
-        android:layout_width="fill_parent"
+    <include
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/scanBottomLayout"
         android:layout_alignParentBottom="true"
-        android:background="?colorPrimary"
-        android:orientation="horizontal"
-        android:padding="@dimen/bottom_bar_padding"
-        android:text="@string/scan"/>
+        layout="@layout/scan_fragment_bottom_layout"/>
+
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/scanButton"
+        android:layout_above="@id/scanBottomLayout"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/scanPadding">
+        >
 
         <FrameLayout
             android:id="@+id/sourceFrame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/scanPadding">
+            android:layout_margin="@dimen/scanPadding"
+            android:layout_gravity="center">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sourceImageView"
@@ -45,4 +45,4 @@
     </FrameLayout>
 
 
-</RelativeLayout>
+</com.scanner.demo.scanlibrary.scan.ScanLayout>

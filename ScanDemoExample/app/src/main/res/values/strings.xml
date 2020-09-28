@@ -34,4 +34,8 @@
     <string name="black_white">B &amp; W</string>
     <string name="pick_photos">Pick Photos</string>
     <string name="proceed">Proceed</string>
+    <string name="no_crop">No Crop</string>
+    <string name="rotate_right">Rotate Right</string>
+    <string name="rotate_left">Rotate Left</string>
+    <string name="back">Back</string>
 </resources>

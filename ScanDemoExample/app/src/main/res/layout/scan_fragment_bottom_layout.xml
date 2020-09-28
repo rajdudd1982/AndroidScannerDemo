@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/black"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/bottom_bar_padding"
+        android:textColor="@android:color/white"
+        android:text="@string/back"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rotateLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/bottom_bar_padding"
+        android:textColor="@android:color/white"
+        android:text="@string/rotate_left"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rotateRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/bottom_bar_padding"
+        android:textColor="@android:color/white"
+        android:text="@string/rotate_right"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/noCrop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/bottom_bar_padding"
+        android:textColor="@android:color/white"
+        android:text="@string/no_crop"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextScan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/bottom_bar_padding"
+        android:textColor="@android:color/white"
+        android:text="@string/scan"/>
+
+</LinearLayout>

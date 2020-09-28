@@ -48,6 +48,10 @@
             android:configChanges="orientation|screenSize">
         </activity>
 
+        <activity android:name="com.scanlibrary.ScanMultipleImageActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/authority"

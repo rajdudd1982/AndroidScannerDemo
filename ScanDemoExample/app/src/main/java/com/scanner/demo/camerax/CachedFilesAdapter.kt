@@ -22,7 +22,7 @@ class CachedFilesAdapter (context: Context) : BaseRecyclerAdapter<CachedFileView
 
 
 
-    class SavedDocViewHolder(context: Context, view: View, val itemClickListener: ItemClickListener<CachedFileViewModel>) : BaseViewHolder<CachedFileViewModel>(context, view) {
+    class SavedDocViewHolder(context: Context, view: View, private val itemClickListener: ItemClickListener<CachedFileViewModel>) : BaseViewHolder<CachedFileViewModel>(context, view) {
 
         override fun updateView(item: CachedFileViewModel, position: Int) {
 

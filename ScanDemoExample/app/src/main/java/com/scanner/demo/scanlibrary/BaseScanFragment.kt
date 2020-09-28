@@ -7,13 +7,15 @@ import com.scanner.demo.scanlibrary.helpers.Utils
 import java.io.IOException
 
 open class BaseScanFragment @JvmOverloads constructor(contentLayoutId: Int=0): Fragment(contentLayoutId) {
+    protected var currentPosition = 0
+    protected var finalUris: ArrayList<Uri?> = ArrayList()
 
     protected val bitmap: Bitmap?
         protected get() {
-            val uri = uri
+            val uri = uris[0]
             try {
                 val bitmap = Utils.getBitmap(activity!!, uri)
-                activity!!.contentResolver.delete(uri!!, null, null)
+            //    activity!!.contentResolver.delete(uri!!, null, null)
                 return bitmap
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -21,8 +23,17 @@ open class BaseScanFragment @JvmOverloads constructor(contentLayoutId: Int=0): F
             return null
         }
 
-    protected val uri: Uri?
-        protected get() = arguments!!.getParcelable(ScanConstants.SELECTED_BITMAP)
+    protected fun getCurrentBitmap(position: Int): Bitmap? {
+        try {
+            return Utils.getBitmap(activity!!, uris[position])
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    protected val uris: ArrayList<Uri?>
+        protected get() = arguments!!.getParcelableArrayList(ScanConstants.SELECTED_BITMAP)!!
 
     protected val folderPath: String?
         protected get() = arguments!!.getString(ScanConstants.FOLDER_PATH)

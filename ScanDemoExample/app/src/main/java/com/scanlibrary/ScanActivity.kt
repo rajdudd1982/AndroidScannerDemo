@@ -9,6 +9,7 @@ import com.scanlibrary.helpers.MediaHelper
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ScanConstants
 import com.scanner.demo.scanlibrary.helpers.Utils
+import java.util.*
 import java.util.logging.Logger
 
 class ScanActivity : BaseMediaScannerActivity() {
@@ -26,9 +27,16 @@ class ScanActivity : BaseMediaScannerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scan_layout)
-        // Clear cache directory
-        com.scanner.demo.helpers.FileHelper. clearCacheDir()
-        openCameraOrGallery()
+
+        if( intent.hasExtra(ScanConstants.SELECTED_BITMAP) != null) {
+            onBitmapSelect(intent.getParcelableArrayListExtra(ScanConstants.SELECTED_BITMAP)!!)
+        } else {
+
+            // Clear cache directory
+            com.scanner.demo.helpers.FileHelper.clearCacheDir()
+            openCameraOrGallery()
+
+        }
     }
 
     private fun openCameraOrGallery(){
@@ -66,7 +74,7 @@ class ScanActivity : BaseMediaScannerActivity() {
     private fun postImagePick(activity: Activity, bitmap: Bitmap) {
         val uri = Utils.insertCachedImage(bitmap)
         bitmap.recycle()
-        onBitmapSelect(uri)
+        onBitmapSelect(Collections.singletonList(uri))
     }
 
     external fun getScannedBitmap(bitmap: Bitmap, x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Bitmap

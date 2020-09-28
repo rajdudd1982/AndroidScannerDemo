@@ -3,23 +3,21 @@ package com.scanner.demo.scanlibrary.scan
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.PointF
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import com.scanner.demo.scanlibrary.helpers.Utils
-import com.scanner.demo.R
 import com.scanlibrary.ScanActivity
+import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.BaseScanFragment
 import com.scanner.demo.scanlibrary.IScanner
 import com.scanner.demo.scanlibrary.ProgressDialogFragment
 import com.scanner.demo.scanlibrary.SingleButtonDialogFragment
 import com.scanner.demo.scanlibrary.helpers.BitmapTransformationHelper
+import com.scanner.demo.scanlibrary.helpers.Utils
+import kotlinx.android.synthetic.main.scan_fragment_bottom_layout.*
 import kotlinx.android.synthetic.main.scan_fragment_layout.*
 
 /**
@@ -49,43 +47,15 @@ class ScanFragment : BaseScanFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scanButton.setOnClickListener(ScanButtonClickListener(uri))
+        scanLayout.bitmapTransformation = bitmapTransformation
+        original = getCurrentBitmap(currentPosition)
+        scanLayout.updateImageView(original)
+        nextScan.setOnClickListener(ScanButtonClickListener(uris[currentPosition]))
 
-        sourceFrame.post {
-            original = bitmap
-            if (original != null) {
-                setBitmap(original!!)
-            }
-        }
     }
 
-    private fun setBitmap(original: Bitmap) {
-        val scaledBitmap = bitmapTransformation.scaledBitmap(original, sourceFrame!!.width, sourceFrame!!.height)
-        sourceImageView.setImageBitmap(scaledBitmap)
-        val tempBitmap = (sourceImageView!!.drawable as BitmapDrawable).bitmap
-        val pointFs = getEdgePoints(tempBitmap)
-        polygonView.points = pointFs
-        polygonView.visibility = View.VISIBLE
-        val padding = resources.getDimension(R.dimen.scanPadding).toInt()
-        val layoutParams = FrameLayout.LayoutParams(tempBitmap.width + 2 * padding, tempBitmap.height + 2 * padding)
-        layoutParams.gravity = Gravity.CENTER
-        polygonView.layoutParams = layoutParams
-    }
 
-    private fun getEdgePoints(tempBitmap: Bitmap): Map<Int, PointF> {
-        val pointFs = bitmapTransformation.getContourEdgePoints(tempBitmap)
-        return orderedValidEdgePoints(tempBitmap, pointFs)
-    }
-
-    private fun orderedValidEdgePoints(tempBitmap: Bitmap, pointFs: List<PointF>): Map<Int, PointF> {
-        var orderedPoints = polygonView!!.getOrderedPoints(pointFs)
-        if (!polygonView!!.isValidShape(orderedPoints)) {
-            orderedPoints = bitmapTransformation.getOutlinePoints(tempBitmap)
-        }
-        return orderedPoints
-    }
-
-    private inner class ScanButtonClickListener(uri: Uri?) : View.OnClickListener {
+    private inner class ScanButtonClickListener(val uri: Uri?) : View.OnClickListener {
         override fun onClick(v: View) {
             val points = polygonView!!.points
             if (isScanPointsValid(points)) {
@@ -116,10 +86,17 @@ class ScanFragment : BaseScanFragment() {
             showProgressDialog(getString(R.string.scanning))
         }
 
-        protected override fun doInBackground(vararg params: Uri?): Bitmap {
+        override fun doInBackground(vararg params: Uri?): Bitmap {
             val bitmap = getScannedBitmap(original, points)
             val uri = Utils.getUri(activity!!, bitmap)
-            scanner!!.onScanFinish(uri)
+            finalUris.add(uri)
+            currentPosition++
+            if (currentPosition != uris.size){
+                original = getCurrentBitmap(currentPosition)
+                scanLayout.updateImageView(original)
+            } else {
+                scanner!!.onScanFinish(finalUris)
+            }
             return bitmap
         }
 

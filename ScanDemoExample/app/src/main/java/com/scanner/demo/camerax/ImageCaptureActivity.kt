@@ -3,6 +3,7 @@ package com.scanner.demo.camerax
 import android.content.Intent
 import android.os.Bundle
 import com.scanlibrary.BaseActivity
+import com.scanlibrary.ScanActivity
 import com.scanlibrary.helpers.MediaHelper
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ScanConstants
@@ -16,12 +17,20 @@ class ImageCaptureActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_layout)
         imageCaptureLayout.setData(this)
+        // Open camera preview or ask permission
         captureImage.setOnClickListener {
             requestPermission(PermissionHelper.PermissionCode.CAMERA_PERMISSION)
         }
+        // Open galley preview or ask permission
         pickPhotos.setOnClickListener {
             requestPermission(PermissionHelper.PermissionCode.WRITE_PERMISSION)
         }
+        proceed.setOnClickListener{
+            var intent = Intent(getActivity(), ScanActivity::class.java)
+            intent.putParcelableArrayListExtra(ScanConstants.SELECTED_BITMAP, ArrayList(imageCaptureLayout.cachedViewModels.map{ it.fileUri }))
+            startActivity(intent)
+        }
+
     }
 
     override fun onPermissionGranted(permission: String, requestCode: Int, isGranted: Boolean) {
