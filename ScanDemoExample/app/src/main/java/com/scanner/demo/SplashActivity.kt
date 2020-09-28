@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.scanlibrary.BaseActivity
-import com.scanner.demo.home.HomeActivity
+import com.scanner.demo.camerax.ImageCaptureActivity
 
 class SplashActivity : BaseActivity() {
 
@@ -14,7 +14,7 @@ class SplashActivity : BaseActivity() {
 
         Handler().postDelayed({
             if(isFinishing) return@postDelayed
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, ImageCaptureActivity::class.java))
             finish()
         }, 800)
     }

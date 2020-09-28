@@ -1,5 +1,6 @@
 package com.scanlibrary
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -25,6 +26,10 @@ open abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected open fun onPermissionGranted(permission: String, requestCode: Int, isGranted: Boolean){}
+
+    protected  fun getActivity() : Activity {
+        return this
+    }
 
 }
 

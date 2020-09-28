@@ -32,4 +32,6 @@
     <string name="magic_color">Magic color</string>
     <string name="gray_mode">Gray Mode</string>
     <string name="black_white">B &amp; W</string>
+    <string name="pick_photos">Pick Photos</string>
+    <string name="proceed">Proceed</string>
 </resources>

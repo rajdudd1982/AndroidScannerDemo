@@ -13,8 +13,8 @@ android {
 
     defaultConfig {
         applicationId "com.scanner.demo"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         ndk {
@@ -47,7 +47,7 @@ android {
 ext {
     iconLibVersion = "5.0.3"
     work_version = "2.4.0"
-    camerax_version = "1.0.0-beta07"
+    camerax_version = "1.0.0-beta10"
 }
 
 dependencies {
@@ -72,11 +72,13 @@ dependencies {
     implementation "androidx.work:work-gcm:$work_version"
 
     // CameraX core library using camera2 implementation
+    implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:$camerax_version"
     // CameraX Lifecycle Library
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
-    implementation "androidx.camera:camera-view:1.0.0-alpha14"
+    implementation "androidx.camera:camera-view:1.0.0-alpha17"
+    implementation "androidx.camera:camera-extensions:1.0.0-alpha17"
 
     // optional - Test helpers
     androidTestImplementation "androidx.work:work-testing:$work_version"

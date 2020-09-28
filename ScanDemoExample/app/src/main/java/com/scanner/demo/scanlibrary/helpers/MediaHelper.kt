@@ -10,11 +10,14 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.scanner.demo.R
+import com.scanner.demo.camerax.CachedFileViewModel
 import com.scanner.demo.helpers.FileHelper
 import com.scanner.demo.scanlibrary.ScanConstants
+import kotlinx.android.synthetic.main.camera_layout.*
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 object MediaHelper {
 
@@ -41,7 +44,6 @@ object MediaHelper {
         return file
     }
 
-
     /**
      * Open Gallery
      */
@@ -51,7 +53,8 @@ object MediaHelper {
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), ScanConstants.PICKFILE_REQUEST_CODE)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        activity.startActivityForResult(Intent.createChooser(intent, "Select Pictures"), ScanConstants.PICKFILE_REQUEST_CODE)
     }
 
 
@@ -62,5 +65,20 @@ object MediaHelper {
         var fileDescriptor: AssetFileDescriptor? = null
         fileDescriptor = activity.contentResolver.openAssetFileDescriptor(selectedImg!!, "r")
         return BitmapFactory.decodeFileDescriptor(fileDescriptor?.fileDescriptor, null, options)
+    }
+
+    @JvmStatic
+    fun getSelectedFiles(data: Intent?): ArrayList<CachedFileViewModel> {
+        var cachedItems: ArrayList<CachedFileViewModel>  = ArrayList()
+        data?.clipData?.let {
+            var cachedFileViewModel: CachedFileViewModel
+            for (index in 0 until it.itemCount) {
+                cachedFileViewModel = CachedFileViewModel()
+                cachedFileViewModel.fileUri = it.getItemAt(index).uri
+                cachedFileViewModel.localCache = false
+                cachedItems.add(cachedFileViewModel)
+            }
+        }
+        return cachedItems
     }
 }

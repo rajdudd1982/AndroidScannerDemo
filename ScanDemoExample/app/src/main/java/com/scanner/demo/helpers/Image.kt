@@ -114,9 +114,9 @@ data class Image(val uri: Uri,
             val parcelFileDescriptor: ParcelFileDescriptor? =
                     contentResolver.openFileDescriptor(uri, "r")
             parcelFileDescriptor?.apply {
-                val fileDescriptor: FileDescriptor = parcelFileDescriptor.fileDescriptor
-                val image: Bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-                parcelFileDescriptor.close()
+                val fileDescriptor: FileDescriptor = this.fileDescriptor
+                val image: Bitmap? = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+                this.close()
                 return image
             }
             return null
