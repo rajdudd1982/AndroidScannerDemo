@@ -23,14 +23,14 @@ object Utils {
     fun getUri(context: Context, bitmap: Bitmap, folderPath: String?): Uri? {
         //val bytes = ByteArrayOutputStream()
         //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-       //val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        //val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
         return getUri(context, bitmap) //Uri.parse(path)//
     }
     @JvmStatic
     fun getUri(context: Context, bitmap: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "temp_${System.currentTimeMillis()}", null)
         return Uri.parse(path)
     }
 
@@ -45,6 +45,11 @@ object Utils {
         return initImageSaving(bitmap, FileHelper.getExternalStorageTempRelativePath(), fileName.name)
     }
 
+    fun insertFinalImages(bitmap: Bitmap, folderPath: String) : Uri? {
+        var file = FileHelper.createFile(folderPath,"final_${System.currentTimeMillis()}")
+        var relativeFolderPath = FileHelper.getFinalRelativePath() + "/" + folderPath.split("/").last()
+        return initImageSaving(bitmap, relativeFolderPath, file.name)
+    }
 
     @SuppressLint("InlinedApi", "ObsoleteSdkInt")
     private fun initImageSaving(bitmap: Bitmap, folderPath: String, fileName: String)  : Uri? {

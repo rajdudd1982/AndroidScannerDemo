@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +37,7 @@ class ResultFragment : BaseScanFragment() {
         original = bitmap
 
         scannedImageView.setImageBitmap(original)
-        doneButton!!.setOnClickListener(DoneButtonClickListener(uris[0]))
+        doneButton!!.setOnClickListener(DoneButtonClickListener(uris[currentPosition]))
 
         imageGradingNavigationView.setOnNavigationItemSelectedListener { item ->
             if (item.itemId == R.id.original) {
@@ -78,23 +80,38 @@ class ResultFragment : BaseScanFragment() {
             showProgressDialog(resources.getString(R.string.loading))
             AsyncTask.execute {
                 try {
-                    val data = Intent()
-                    var bitmap = transformed ?: original
-
-                    val uri = Utils.getUri(activity!!, bitmap!!, folderPath)
-                    data.putExtra(ScanConstants.SCANNED_RESULT, uri)
-                    activity!!.setResult(Activity.RESULT_OK, data)
-                    original!!.recycle()
-                    System.gc()
-                    activity!!.runOnUiThread {
-                        dismissDialog()
-                        activity!!.finish()
-                    }
+                    onDoneClick()
                 } catch (e: Exception) {
                     e.printStackTrace()
                     dismissDialog()
                 }
             }
+        }
+    }
+
+    @Throws(java.lang.Exception::class)
+    private fun onDoneClick() {
+        var bitmap = transformed ?: original
+        val uri = Utils.insertFinalImages(bitmap!!, folderPath!!)
+        original!!.recycle()
+        System.gc()
+        finalUris.add(uri)
+        currentPosition++
+        if (currentPosition != uris.size) {
+            Handler(Looper.getMainLooper()).post{
+                original = getCurrentBitmap(currentPosition)
+                scannedImageView.setImageBitmap(original)
+                dismissDialog()
+            }
+            return
+        }
+
+        val data = Intent()
+        data.putParcelableArrayListExtra(ScanConstants.SCANNED_RESULT, finalUris)
+        activity!!.setResult(Activity.RESULT_OK, data)
+        activity!!.runOnUiThread {
+            dismissDialog()
+            activity!!.finish()
         }
     }
 }

@@ -5,10 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import com.scanner.demo.helpers.AndroidHelper
-import com.scanner.demo.helpers.FileInterimHelper
-import com.scanner.demo.helpers.IntentHelper
-import com.scanner.demo.helpers.PdfConverter
+import com.scanner.demo.helpers.*
 import com.scanner.demo.listeners.ItemClickListener
 import com.scanner.demo.scanlibrary.ScanConstants
 import kotlinx.android.synthetic.main.home_fragment.view.*
@@ -31,7 +28,7 @@ open class  HomeContentLayout : RelativeLayout {
     }
 
     fun listItems() {
-        FileInterimHelper.getImagesInFolder(true, ScanConstants.FOLDER_PREFIX_PATH, itemClickListener)?.apply {
+        FileInterimHelper.getImagesInFolder(false, FileHelper.getFinalRelativePath().split("/").last(), itemClickListener)?.apply {
             adapter.setItemList(this)
         }
     }

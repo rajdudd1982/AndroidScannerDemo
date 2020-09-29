@@ -68,8 +68,8 @@ data class Image(val uri: Uri,
             val query = AndroidHelper.appContext().contentResolver.query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     projection,
-                    selection,
-                    selectionArgs,
+                    null,
+                    null,
                     sortOrder
             )
 

@@ -9,6 +9,7 @@ import com.scanlibrary.helpers.MediaHelper
 import com.scanner.demo.R
 import com.scanner.demo.scanlibrary.ScanConstants
 import com.scanner.demo.scanlibrary.helpers.Utils
+import kotlinx.android.synthetic.main.camera_layout.*
 import java.util.*
 import java.util.logging.Logger
 
@@ -17,7 +18,7 @@ class ScanActivity : BaseMediaScannerActivity() {
     init {
 
         try {
-            // System.loadLibrary("opencv_java3")
+            System.loadLibrary("opencv_java3")
             System.loadLibrary("Scanner")
         } catch (e: java.lang.Exception){
             Logger.getLogger(e.message)
@@ -28,7 +29,7 @@ class ScanActivity : BaseMediaScannerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scan_layout)
 
-        if( intent.hasExtra(ScanConstants.SELECTED_BITMAP) != null) {
+        if( intent.hasExtra(ScanConstants.SELECTED_BITMAP)) {
             onBitmapSelect(intent.getParcelableArrayListExtra(ScanConstants.SELECTED_BITMAP)!!)
         } else {
 
@@ -56,7 +57,11 @@ class ScanActivity : BaseMediaScannerActivity() {
             try {
                 when (requestCode) {
                     ScanConstants.START_CAMERA_REQUEST_CODE -> bitmap = MediaHelper.getBitmap(this, fileUri)
-                    ScanConstants.PICKFILE_REQUEST_CODE -> bitmap = MediaHelper.getBitmap(this, data!!.data)
+                    ScanConstants.PICKFILE_REQUEST_CODE ->{
+                        var uriList = ArrayList(MediaHelper.getSelectedFiles(data).map{ it.fileUri })
+                        onBitmapSelect(uriList)
+                        return
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

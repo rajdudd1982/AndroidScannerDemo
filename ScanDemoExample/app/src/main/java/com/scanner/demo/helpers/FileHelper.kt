@@ -20,6 +20,7 @@ object FileHelper {
         val imageCacheParentDir = "${AndroidHelper.appContext().cacheDir.path}/${scannedImagePath}"
         val tempExternalParentDir = "${parentDir}/${tempScannedImagePath}"
         val tempExternalParentRelativePath = "${Environment.DIRECTORY_PICTURES}/${tempScannedImagePath}"
+        val finalRelativePath = "${Environment.DIRECTORY_PICTURES}/${scannedImagePath}"
     }
 
     @JvmStatic
@@ -39,6 +40,26 @@ object FileHelper {
     fun getExternalStorageTempRelativePath() : String {
         return FileConstant.tempExternalParentRelativePath
     }
+
+
+    @JvmStatic
+    fun getFinalPathDirectory() : String {
+        return FileConstant.imageParentDir
+    }
+    @JvmStatic
+    fun getFinalRelativePath() : String {
+        return FileConstant.finalRelativePath
+    }
+
+    @JvmStatic
+    fun createFile(folderName: String, fileName: String) : File {
+        var file  = File(folderName, fileName)
+        when (!file.exists()) {
+            true -> file.createNewFile()
+        }
+        return file
+    }
+
 
     @JvmStatic
     fun createExternalStorageFile(dirPath: String, fileName: String) : File {

@@ -90,6 +90,11 @@ class ScanFragment : BaseScanFragment() {
             val bitmap = getScannedBitmap(original, points)
             val uri = Utils.getUri(activity!!, bitmap)
             finalUris.add(uri)
+            return bitmap
+        }
+
+        override fun onPostExecute(bitmap: Bitmap) {
+            super.onPostExecute(bitmap)
             currentPosition++
             if (currentPosition != uris.size){
                 original = getCurrentBitmap(currentPosition)
@@ -97,11 +102,7 @@ class ScanFragment : BaseScanFragment() {
             } else {
                 scanner!!.onScanFinish(finalUris)
             }
-            return bitmap
-        }
 
-        override fun onPostExecute(bitmap: Bitmap) {
-            super.onPostExecute(bitmap)
             bitmap.recycle()
             dismissDialog()
         }
